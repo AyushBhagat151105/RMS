@@ -120,8 +120,105 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.TestScalarFieldEnum = {
-  id: 'id'
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  username: 'username',
+  fullName: 'fullName',
+  email: 'email',
+  password: 'password',
+  role: 'role',
+  isVerified: 'isVerified',
+  accessToken: 'accessToken',
+  verificationToken: 'verificationToken',
+  verificationTokenExpiry: 'verificationTokenExpiry',
+  resetToken: 'resetToken',
+  resetTokenExpiry: 'resetTokenExpiry',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RestaurantsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  address: 'address',
+  phone: 'phone',
+  email: 'email',
+  logoUrl: 'logoUrl',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  message: 'message',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.OrdersScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tableId: 'tableId',
+  status: 'status',
+  total: 'total',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TablesScalarFieldEnum = {
+  id: 'id',
+  number: 'number',
+  capacity: 'capacity',
+  restaurantId: 'restaurantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.Order_ItemScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  menuItemId: 'menuItemId',
+  quantity: 'quantity',
+  price: 'price',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  amount: 'amount',
+  method: 'method',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MenuItemScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  imageUrl: 'imageUrl',
+  available: 'available',
+  restaurantId: 'restaurantId',
+  categoryId: 'categoryId',
+  tags: 'tags',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.Menu_categoriesScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  restaurantId: 'restaurantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -134,9 +231,47 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.Role = exports.$Enums.Role = {
+  ADMIN: 'ADMIN',
+  WAITER: 'WAITER',
+  KITCHEN: 'KITCHEN',
+  CUSTOMER: 'CUSTOMER'
+};
+
+exports.OrderStatus = exports.$Enums.OrderStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.method = exports.$Enums.method = {
+  CASH: 'CASH',
+  CARD: 'CARD',
+  ONLINE: 'ONLINE'
+};
+
+exports.status = exports.$Enums.status = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
 
 exports.Prisma.ModelName = {
-  Test: 'Test'
+  User: 'User',
+  restaurants: 'restaurants',
+  Notification: 'Notification',
+  Orders: 'Orders',
+  tables: 'tables',
+  Order_Item: 'Order_Item',
+  payment: 'payment',
+  menuItem: 'menuItem',
+  menu_categories: 'menu_categories'
 };
 
 /**
