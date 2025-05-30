@@ -166,6 +166,7 @@ exports.Prisma.OrdersScalarFieldEnum = {
   tableId: 'tableId',
   status: 'status',
   total: 'total',
+  restaurantId: 'restaurantId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -175,6 +176,7 @@ exports.Prisma.TablesScalarFieldEnum = {
   number: 'number',
   capacity: 'capacity',
   restaurantId: 'restaurantId',
+  qrCodeUrl: 'qrCodeUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

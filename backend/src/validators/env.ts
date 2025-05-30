@@ -14,6 +14,8 @@ const envSchema = z.object({
   REFRESHTOKEN_EXPIRE: z
     .string()
     .min(1, { message: "REFRESHTOKEN_EXPIRE is required" }),
+  MAILTRAP_USER: z.string().min(1, { message: "MAILTRAP_USER is required" }),
+  MAILTRAP_PASS: z.string().min(1, { message: "MAILTRAP_PASS is required" }),
 });
 function createENV(env: NodeJS.ProcessEnv) {
   const validationResult = envSchema.safeParse(env);

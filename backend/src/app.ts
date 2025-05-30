@@ -16,14 +16,13 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Routes
+import { authRoute } from "./routes/authRoute.route";
 
-
+app.use("/api/v1/auth", authRoute);
 
 app.get("/", (req, res) => {
   res.status(200).json("It is up and running...");
 });
-
-
-
 
 export default app;

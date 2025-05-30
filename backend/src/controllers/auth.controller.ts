@@ -5,8 +5,10 @@ import { asyncHandler } from "@/utils/asyncHandler";
 import { Request, Response } from "express";
 import crypto, { verify } from "crypto";
 import { env } from "@/validators/env";
-import { ResendMailer } from "@/utils/mail";
 import bcrypt from "bcryptjs";
+import { generateAccessTokenAndRefreshToken } from "@/utils/jwtToken";
+import { options } from "@/utils/cookiesOptions";
+import { MailtrapMailer } from "@/utils/mail";
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { email, password, username, fullName } = req.body;
@@ -22,7 +24,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const token = await crypto.randomBytes(32).toString("hex");
-  const sendMail = new ResendMailer(email);
+  const sendMail = new MailtrapMailer(email);
   const verificationLink = `${env.FRONTEND_URL}/verify-email/${token}`;
   const html = `<p>Click the link below to verify your email:</p>
     <a href="${verificationLink}">Verify Email</a>`;
@@ -81,4 +83,44 @@ export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
   return res
     .status(200)
     .json(new ApiResponse(200, "Email verified successfully", {}));
+});
+
+export const login = asyncHandler(async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  const user = await db.user.findFirst({
+    where: {
+      email: email,
+      isVerified: true,
+    },
+  });
+
+  if (!user) {
+    throw new ApiError(404, "User not found or email not verified");
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    throw new ApiError(401, "Invalid password");
+  }
+
+  const { accessToken, refreshToken } =
+    await generateAccessTokenAndRefreshToken(user.id, user.role);
+
+  if (!accessToken || !refreshToken) {
+    throw new ApiError(500, "Failed to generate tokens");
+  }
+
+  await db.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      accessToken: accessToken,
+    },
+  });
+
+  return res
+    .status(200)
+    .cookie("refreshToken", refreshToken, options)
+    .json(new ApiResponse(200, "Login successful", {}));
 });
