@@ -27,6 +27,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   const sendMail = new MailtrapMailer(email);
   const verificationLink = `${env.FRONTEND_URL}/verify-email/${token}`;
   const html = `<p>Click the link below to verify your email:</p>
+  <p>${verificationLink}</p>
     <a href="${verificationLink}">Verify Email</a>`;
 
   await sendMail.sendMail({
@@ -123,4 +124,22 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     .status(200)
     .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(200, "Login successful", {}));
+});
+
+export const logout = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+
+  if (!userId) {
+    throw new ApiError(401, "Unauthorized");
+  }
+
+  await db.user.update({
+    where: { id: userId },
+    data: { accessToken: null },
+  });
+
+  return res
+    .status(200)
+    .clearCookie("refreshToken")
+    .json(new ApiResponse(200, "Logout successful", {}));
 });
