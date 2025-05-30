@@ -16,6 +16,15 @@ const envSchema = z.object({
     .min(1, { message: "REFRESHTOKEN_EXPIRE is required" }),
   MAILTRAP_USER: z.string().min(1, { message: "MAILTRAP_USER is required" }),
   MAILTRAP_PASS: z.string().min(1, { message: "MAILTRAP_PASS is required" }),
+  CLOUDINARY_CLOUD_NAME: z
+    .string()
+    .min(1, { message: "CLOUDINARY_CLOUD_NAME is required" }),
+  CLOUDINARY_API_KEY: z
+    .string()
+    .min(1, { message: "CLOUDINARY_API_KEY is required" }),
+  CLOUDINARY_API_SECRET: z
+    .string()
+    .min(1, { message: "CLOUDINARY_API_SECRET is required" }),
 });
 function createENV(env: NodeJS.ProcessEnv) {
   const validationResult = envSchema.safeParse(env);
