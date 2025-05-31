@@ -3,7 +3,7 @@ import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
 import { Request, Response } from "express";
-import crypto, { verify } from "crypto";
+import crypto from "crypto";
 import { env } from "@/validators/env";
 import bcrypt from "bcryptjs";
 import { generateAccessTokenAndRefreshToken } from "@/utils/jwtToken";
