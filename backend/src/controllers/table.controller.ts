@@ -1,0 +1,72 @@
+import { db } from "@/db";
+import { generateQRCodeAndUpload } from "@/services/qrCodegenrator";
+import { ApiError } from "@/utils/apiError";
+import { ApiResponse } from "@/utils/apiResponse";
+import { asyncHandler } from "@/utils/asyncHandler";
+import { Request, Response } from "express";
+
+export const createTable = asyncHandler(async (req: Request, res: Response) => {
+  const { id, role } = req.user ? req.user : { id: null, role: null };
+
+  if (!id || role !== "ADMIN") {
+    throw new ApiError(403, "Forbidden: You do not have permission");
+  }
+
+  const { restaurantId, number, capacity } = req.body;
+
+  if (!restaurantId || !number || !capacity) {
+    throw new ApiError(400, "Bad Request: Missing required fields");
+  }
+
+  const table = await db.tables.create({
+    data: {
+      restaurant: {
+        connect: {
+          id: restaurantId,
+        },
+      },
+      number,
+      capacity,
+    },
+  });
+
+  const qrCodeUrl = await generateQRCodeAndUpload(restaurantId, table.id);
+
+  const updatedTable = await db.tables.update({
+    where: { id: table.id },
+    data: {
+      qrCodeUrl: qrCodeUrl || null,
+    },
+  });
+
+  return res
+    .status(201)
+    .json(new ApiResponse(201, "Table creted successfully", updatedTable));
+});
+
+export const getAllTables = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    if (!id) {
+      throw new ApiError(400, "Bad Request: Missing restaurant ID");
+    }
+
+    const tables = await db.tables.findMany({
+      where: {
+        restaurantId: id,
+      },
+      include: {
+        restaurant: true,
+      },
+    });
+
+    if (tables.length === 0) {
+      throw new ApiError(404, "Not Found: No tables found for this restaurant");
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Tables retrieved successfully", tables));
+  }
+);

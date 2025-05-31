@@ -13061,10 +13061,10 @@ export namespace Prisma {
 
   export type tablesWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    number?: number
     AND?: tablesWhereInput | tablesWhereInput[]
     OR?: tablesWhereInput[]
     NOT?: tablesWhereInput | tablesWhereInput[]
+    number?: IntFilter<"tables"> | number
     capacity?: IntFilter<"tables"> | number
     restaurantId?: StringFilter<"tables"> | string
     qrCodeUrl?: StringNullableFilter<"tables"> | string | null
@@ -13072,7 +13072,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"tables"> | Date | string
     restaurant?: XOR<RestaurantsScalarRelationFilter, restaurantsWhereInput>
     Orders?: OrdersListRelationFilter
-  }, "id" | "number">
+  }, "id">
 
   export type tablesOrderByWithAggregationInput = {
     id?: SortOrder

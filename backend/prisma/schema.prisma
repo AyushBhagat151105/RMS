@@ -103,7 +103,7 @@ model Orders {
 
 model tables {
   id           String      @id @default(uuid())
-  number       Int         @unique
+  number       Int
   capacity     Int
   restaurantId String
   qrCodeUrl    String?
@@ -112,6 +112,8 @@ model tables {
   updatedAt    DateTime    @updatedAt
 
   Orders Orders[]
+
+  @@index([restaurantId])
 }
 
 model Order_Item {

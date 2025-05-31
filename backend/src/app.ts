@@ -19,9 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 import { authRoute } from "./routes/authRoute.route";
 import { restaurantRouter } from "./routes/restaurant.route";
+import { tableRouter } from "./routes/table.route";
 
 app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/restaurant", restaurantRouter)
+app.use("/api/v1/restaurant", restaurantRouter);
+app.use("/api/v1/table", tableRouter);
 
 app.get("/", (req, res) => {
   res.status(200).json("It is up and running...");
