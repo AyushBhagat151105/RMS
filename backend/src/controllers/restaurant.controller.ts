@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
+import { uploadOnCloudinary } from "@/utils/cloudinary";
 import { Request, Response } from "express";
 
 export const createRestaurant = asyncHandler(
@@ -171,7 +172,47 @@ export const deleteRestaurant = asyncHandler(
     return res
       .status(200)
       .json(
-        new ApiResponse(200, "Restaurant deleted successfully", deletedRestaurant)
+        new ApiResponse(
+          200,
+          "Restaurant deleted successfully",
+          deletedRestaurant
+        )
       );
   }
 );
+
+export const updateLogo = asyncHandler(async (req: Request, res: Response) => {
+  const role = req.user?.role;
+  const id = req.params.id;
+  if (role !== "ADMIN") {
+    throw new ApiError(403, "Forbidden: You do not have permission");
+  }
+
+  if (!id) {
+    throw new ApiError(400, "Bad Request: Restaurant ID is required");
+  }
+
+  const logo = (req.files as { [fieldname: string]: Express.Multer.File[] })
+    ?.logoUrl?.[0]?.path;
+
+  if (!logo) {
+    throw new ApiError(400, "Bad Request: Logo file is required");
+  }
+
+  const logoUrl = await uploadOnCloudinary(logo);
+
+  const updatedRestaurant = await db.restaurants.update({
+    where: { id },
+    data: {
+      logoUrl: logoUrl ? logoUrl.secure_url : null,
+    },
+  });
+
+  if (!updatedRestaurant) {
+    throw new ApiError(404, "Restaurant not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Logo updated successfully", updateRestaurant));
+});
