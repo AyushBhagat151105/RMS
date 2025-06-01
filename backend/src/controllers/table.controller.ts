@@ -56,9 +56,6 @@ export const getAllTables = asyncHandler(
       where: {
         restaurantId: id,
       },
-      include: {
-        restaurant: true,
-      },
     });
 
     if (tables.length === 0) {
@@ -70,3 +67,58 @@ export const getAllTables = asyncHandler(
       .json(new ApiResponse(200, "Tables retrieved successfully", tables));
   }
 );
+
+export const deleteTable = asyncHandler(async (req: Request, res: Response) => {
+  const { id, role } = req.user ? req.user : { id: null, role: null };
+
+  if (!id || role !== "ADMIN") {
+    throw new ApiError(403, "Forbidden: You do not have permission");
+  }
+
+  const { tableId } = req.params;
+
+  if (!tableId) {
+    throw new ApiError(400, "Bad Request: Missing table ID");
+  }
+
+  const table = await db.tables.delete({
+    where: { id: tableId },
+  });
+
+  if (!table) {
+    throw new ApiError(404, "Not Found: Table not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Table deleted successfully", {}));
+});
+
+export const updateTable = asyncHandler(async (req: Request, res: Response) => {
+  const { id, role } = req.user ? req.user : { id: null, role: null };
+
+  if (!id || role !== "ADMIN") {
+    throw new ApiError(403, "Forbidden: You do not have permission");
+  }
+
+  const { tableId } = req.params;
+  const { number, capacity } = req.body;
+  if (!tableId || !number || !capacity) {
+    throw new ApiError(400, "Bad Request: Missing required fields");
+  }
+
+  const table = await db.tables.update({
+    where: { id: tableId },
+    data: {
+      number,
+      capacity,
+    },
+  });
+
+  if (!table) {
+    throw new ApiError(404, "Not Found: Table not found");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Table updated successfully", table));
+});
