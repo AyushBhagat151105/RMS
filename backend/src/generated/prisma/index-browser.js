@@ -138,6 +138,30 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.WaiterScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  email: 'email',
+  password: 'password',
+  avatar: 'avatar',
+  accessToken: 'accessToken',
+  restaurantId: 'restaurantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.KitchenScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  email: 'email',
+  password: 'password',
+  avatar: 'avatar',
+  accessToken: 'accessToken',
+  restaurantId: 'restaurantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.RestaurantsScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -240,8 +264,6 @@ exports.Prisma.NullsOrder = {
 };
 exports.Role = exports.$Enums.Role = {
   ADMIN: 'ADMIN',
-  WAITER: 'WAITER',
-  KITCHEN: 'KITCHEN',
   CUSTOMER: 'CUSTOMER'
 };
 
@@ -267,6 +289,8 @@ exports.status = exports.$Enums.status = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Waiter: 'Waiter',
+  Kitchen: 'Kitchen',
   restaurants: 'restaurants',
   Notification: 'Notification',
   Orders: 'Orders',

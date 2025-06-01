@@ -23,8 +23,6 @@ enum status {
 
 enum Role {
   ADMIN
-  WAITER
-  KITCHEN
   CUSTOMER
 }
 
@@ -56,6 +54,36 @@ model User {
   restaurants             restaurants[]
 }
 
+model Waiter {
+  id           String      @id @default(uuid())
+  fullName     String
+  email        String      @unique
+  password     String
+  avatar       String?
+  accessToken  String?     @unique
+  restaurantId String
+  restaurant   restaurants @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([restaurantId])
+}
+
+model Kitchen {
+  id           String      @id @default(uuid())
+  fullName     String
+  email        String      @unique
+  password     String
+  avatar       String?
+  accessToken  String?     @unique
+  restaurantId String
+  restaurant   restaurants @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([restaurantId])
+}
+
 model restaurants {
   id              String            @id @default(uuid())
   name            String            @unique
@@ -72,6 +100,8 @@ model restaurants {
   menu_categories menu_categories[]
   tables          tables[]
   Orders          Orders[]
+  Waiter          Waiter[]
+  Kitchen         Kitchen[]
 }
 
 model Notification {
