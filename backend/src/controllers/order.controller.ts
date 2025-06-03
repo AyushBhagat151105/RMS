@@ -181,7 +181,7 @@ export const getAllOrders = asyncHandler(
         },
       },
     });
-        
+
     if (!orders) {
       throw new ApiError(404, "Order not found");
     }
@@ -191,3 +191,99 @@ export const getAllOrders = asyncHandler(
       .json(new ApiResponse(200, "Order retrieved successfully", orders));
   }
 );
+
+export const updateOrder = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { status, items } = req.body;
+
+  const order = await db.orders.findUnique({ where: { id } });
+
+  if (!order) {
+    throw new ApiError(404, "Order not found");
+  }
+
+  let updatedTotal = order.total;
+
+  if (items && Array.isArray(items) && items.length > 0) {
+    let restaurantId: string | null = null;
+    updatedTotal = 0;
+
+    for (const item of items) {
+      if (!item.menuId || !item.quantity || !item.price) {
+        throw new ApiError(
+          400,
+          "Each item must have menuId, quantity, and price"
+        );
+      }
+
+      const menuItem = await db.menuItem.findUnique({
+        where: { id: item.menuId },
+      });
+
+      if (!menuItem || !menuItem.available) {
+        throw new ApiError(
+          404,
+          `Menu item ${item.menuId} not found or not available`
+        );
+      }
+
+      if (!restaurantId) {
+        restaurantId = menuItem.restaurantId;
+      } else if (restaurantId !== menuItem.restaurantId) {
+        throw new ApiError(400, "All items must belong to the same restaurant");
+      }
+
+      updatedTotal += item.price * item.quantity;
+    }
+
+    await db.order_Item.deleteMany({
+      where: { orderId: id },
+    });
+
+    const newItems = items.map((item) => ({
+      orderId: id,
+      menuItemId: item.menuId,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+
+    await db.order_Item.createMany({ data: newItems });
+  }
+
+  const updatedOrder = await db.orders.update({
+    where: { id },
+    data: {
+      status,
+      total: updatedTotal,
+    },
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Order updated successfully", updatedOrder));
+});
+
+export const cancelOrder = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const order = await db.orders.findUnique({ where: { id } });
+
+  if (!order) {
+    throw new ApiError(404, "Order not found");
+  }
+
+  if (order.status === "IN_PROGRESS") {
+    throw new ApiError(400, "Cannot cancel an order in progress");
+  }
+
+  const cancelledOrder = await db.orders.update({
+    where: { id },
+    data: {
+      status: "CANCELLED",
+    },
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Order cancelled successfully", cancelledOrder));
+});
