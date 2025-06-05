@@ -272,8 +272,8 @@ export const cancelOrder = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(404, "Order not found");
   }
 
-  if (order.status === "IN_PROGRESS") {
-    throw new ApiError(400, "Cannot cancel an order in progress");
+  if (order.status === "IN_PROGRESS" || order.status === "COMPLETED") {
+    throw new ApiError(400, `Cannot cancel an order in ${order.status}`);
   }
 
   const cancelledOrder = await db.orders.update({
@@ -287,3 +287,20 @@ export const cancelOrder = asyncHandler(async (req: Request, res: Response) => {
     .status(200)
     .json(new ApiResponse(200, "Order cancelled successfully", cancelledOrder));
 });
+
+export const getOrderStatus = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    if (!id) {
+      throw new ApiError(400, "id is required");
+    }
+
+    const status = await db.orders.findUnique({
+      where: { id },
+      select: {
+        status: true,
+      },
+    });
+  }
+);
