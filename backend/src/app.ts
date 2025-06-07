@@ -2,6 +2,8 @@ import express, { Express } from "express";
 import cors from "cors";
 import { env } from "./validators/env";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger-output.json";
 const app: Express = express();
 
 app.use(
@@ -16,6 +18,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Routes
 import { authRoute } from "./routes/authRoute.route";
 import { restaurantRouter } from "./routes/restaurant.route";
