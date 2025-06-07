@@ -12,6 +12,11 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as WaiterIndexImport } from './routes/waiter/index'
+import { Route as RestaurantsIndexImport } from './routes/restaurants/index'
+import { Route as KitchenIndexImport } from './routes/kitchen/index'
+import { Route as AdminIndexImport } from './routes/admin/index'
+import { Route as RestaurantsRestaurantsIdRestaurantImport } from './routes/restaurants_/$restaurantsId/restaurant'
 
 // Create/Update Routes
 
@@ -20,6 +25,37 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const WaiterIndexRoute = WaiterIndexImport.update({
+  id: '/waiter/',
+  path: '/waiter/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RestaurantsIndexRoute = RestaurantsIndexImport.update({
+  id: '/restaurants/',
+  path: '/restaurants/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const KitchenIndexRoute = KitchenIndexImport.update({
+  id: '/kitchen/',
+  path: '/kitchen/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminIndexRoute = AdminIndexImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RestaurantsRestaurantsIdRestaurantRoute =
+  RestaurantsRestaurantsIdRestaurantImport.update({
+    id: '/restaurants_/$restaurantsId/restaurant',
+    path: '/restaurants/$restaurantsId/restaurant',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -32,6 +68,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/kitchen/': {
+      id: '/kitchen/'
+      path: '/kitchen'
+      fullPath: '/kitchen'
+      preLoaderRoute: typeof KitchenIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/restaurants/': {
+      id: '/restaurants/'
+      path: '/restaurants'
+      fullPath: '/restaurants'
+      preLoaderRoute: typeof RestaurantsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/waiter/': {
+      id: '/waiter/'
+      path: '/waiter'
+      fullPath: '/waiter'
+      preLoaderRoute: typeof WaiterIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/restaurants_/$restaurantsId/restaurant': {
+      id: '/restaurants_/$restaurantsId/restaurant'
+      path: '/restaurants/$restaurantsId/restaurant'
+      fullPath: '/restaurants/$restaurantsId/restaurant'
+      preLoaderRoute: typeof RestaurantsRestaurantsIdRestaurantImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +110,77 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminIndexRoute
+  '/kitchen': typeof KitchenIndexRoute
+  '/restaurants': typeof RestaurantsIndexRoute
+  '/waiter': typeof WaiterIndexRoute
+  '/restaurants/$restaurantsId/restaurant': typeof RestaurantsRestaurantsIdRestaurantRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminIndexRoute
+  '/kitchen': typeof KitchenIndexRoute
+  '/restaurants': typeof RestaurantsIndexRoute
+  '/waiter': typeof WaiterIndexRoute
+  '/restaurants/$restaurantsId/restaurant': typeof RestaurantsRestaurantsIdRestaurantRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/admin/': typeof AdminIndexRoute
+  '/kitchen/': typeof KitchenIndexRoute
+  '/restaurants/': typeof RestaurantsIndexRoute
+  '/waiter/': typeof WaiterIndexRoute
+  '/restaurants_/$restaurantsId/restaurant': typeof RestaurantsRestaurantsIdRestaurantRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/kitchen'
+    | '/restaurants'
+    | '/waiter'
+    | '/restaurants/$restaurantsId/restaurant'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/kitchen'
+    | '/restaurants'
+    | '/waiter'
+    | '/restaurants/$restaurantsId/restaurant'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin/'
+    | '/kitchen/'
+    | '/restaurants/'
+    | '/waiter/'
+    | '/restaurants_/$restaurantsId/restaurant'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  KitchenIndexRoute: typeof KitchenIndexRoute
+  RestaurantsIndexRoute: typeof RestaurantsIndexRoute
+  WaiterIndexRoute: typeof WaiterIndexRoute
+  RestaurantsRestaurantsIdRestaurantRoute: typeof RestaurantsRestaurantsIdRestaurantRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  KitchenIndexRoute: KitchenIndexRoute,
+  RestaurantsIndexRoute: RestaurantsIndexRoute,
+  WaiterIndexRoute: WaiterIndexRoute,
+  RestaurantsRestaurantsIdRestaurantRoute:
+    RestaurantsRestaurantsIdRestaurantRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +193,31 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/admin/",
+        "/kitchen/",
+        "/restaurants/",
+        "/waiter/",
+        "/restaurants_/$restaurantsId/restaurant"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/admin/": {
+      "filePath": "admin/index.tsx"
+    },
+    "/kitchen/": {
+      "filePath": "kitchen/index.tsx"
+    },
+    "/restaurants/": {
+      "filePath": "restaurants/index.tsx"
+    },
+    "/waiter/": {
+      "filePath": "waiter/index.tsx"
+    },
+    "/restaurants_/$restaurantsId/restaurant": {
+      "filePath": "restaurants_/$restaurantsId/restaurant.tsx"
     }
   }
 }
