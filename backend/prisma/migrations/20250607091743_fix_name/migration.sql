@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Kitchen" ALTER COLUMN "role" SET DEFAULT 'KITCHEN';

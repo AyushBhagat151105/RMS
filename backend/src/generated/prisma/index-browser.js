@@ -145,6 +145,7 @@ exports.Prisma.WaiterScalarFieldEnum = {
   password: 'password',
   avatar: 'avatar',
   accessToken: 'accessToken',
+  role: 'role',
   restaurantId: 'restaurantId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -156,6 +157,7 @@ exports.Prisma.KitchenScalarFieldEnum = {
   email: 'email',
   password: 'password',
   avatar: 'avatar',
+  role: 'role',
   accessToken: 'accessToken',
   restaurantId: 'restaurantId',
   createdAt: 'createdAt',

@@ -3367,6 +3367,7 @@ export namespace Prisma {
     password: string | null
     avatar: string | null
     accessToken: string | null
+    role: string | null
     restaurantId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3379,6 +3380,7 @@ export namespace Prisma {
     password: string | null
     avatar: string | null
     accessToken: string | null
+    role: string | null
     restaurantId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -3391,6 +3393,7 @@ export namespace Prisma {
     password: number
     avatar: number
     accessToken: number
+    role: number
     restaurantId: number
     createdAt: number
     updatedAt: number
@@ -3405,6 +3408,7 @@ export namespace Prisma {
     password?: true
     avatar?: true
     accessToken?: true
+    role?: true
     restaurantId?: true
     createdAt?: true
     updatedAt?: true
@@ -3417,6 +3421,7 @@ export namespace Prisma {
     password?: true
     avatar?: true
     accessToken?: true
+    role?: true
     restaurantId?: true
     createdAt?: true
     updatedAt?: true
@@ -3429,6 +3434,7 @@ export namespace Prisma {
     password?: true
     avatar?: true
     accessToken?: true
+    role?: true
     restaurantId?: true
     createdAt?: true
     updatedAt?: true
@@ -3514,6 +3520,7 @@ export namespace Prisma {
     password: string
     avatar: string | null
     accessToken: string | null
+    role: string
     restaurantId: string
     createdAt: Date
     updatedAt: Date
@@ -3543,6 +3550,7 @@ export namespace Prisma {
     password?: boolean
     avatar?: boolean
     accessToken?: boolean
+    role?: boolean
     restaurantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3556,6 +3564,7 @@ export namespace Prisma {
     password?: boolean
     avatar?: boolean
     accessToken?: boolean
+    role?: boolean
     restaurantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3569,6 +3578,7 @@ export namespace Prisma {
     password?: boolean
     avatar?: boolean
     accessToken?: boolean
+    role?: boolean
     restaurantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -3582,12 +3592,13 @@ export namespace Prisma {
     password?: boolean
     avatar?: boolean
     accessToken?: boolean
+    role?: boolean
     restaurantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type WaiterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "avatar" | "accessToken" | "restaurantId" | "createdAt" | "updatedAt", ExtArgs["result"]["waiter"]>
+  export type WaiterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "avatar" | "accessToken" | "role" | "restaurantId" | "createdAt" | "updatedAt", ExtArgs["result"]["waiter"]>
   export type WaiterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     restaurant?: boolean | restaurantsDefaultArgs<ExtArgs>
   }
@@ -3610,6 +3621,7 @@ export namespace Prisma {
       password: string
       avatar: string | null
       accessToken: string | null
+      role: string
       restaurantId: string
       createdAt: Date
       updatedAt: Date
@@ -4043,6 +4055,7 @@ export namespace Prisma {
     readonly password: FieldRef<"Waiter", 'String'>
     readonly avatar: FieldRef<"Waiter", 'String'>
     readonly accessToken: FieldRef<"Waiter", 'String'>
+    readonly role: FieldRef<"Waiter", 'String'>
     readonly restaurantId: FieldRef<"Waiter", 'String'>
     readonly createdAt: FieldRef<"Waiter", 'DateTime'>
     readonly updatedAt: FieldRef<"Waiter", 'DateTime'>
@@ -4476,6 +4489,7 @@ export namespace Prisma {
     email: string | null
     password: string | null
     avatar: string | null
+    role: string | null
     accessToken: string | null
     restaurantId: string | null
     createdAt: Date | null
@@ -4488,6 +4502,7 @@ export namespace Prisma {
     email: string | null
     password: string | null
     avatar: string | null
+    role: string | null
     accessToken: string | null
     restaurantId: string | null
     createdAt: Date | null
@@ -4500,6 +4515,7 @@ export namespace Prisma {
     email: number
     password: number
     avatar: number
+    role: number
     accessToken: number
     restaurantId: number
     createdAt: number
@@ -4514,6 +4530,7 @@ export namespace Prisma {
     email?: true
     password?: true
     avatar?: true
+    role?: true
     accessToken?: true
     restaurantId?: true
     createdAt?: true
@@ -4526,6 +4543,7 @@ export namespace Prisma {
     email?: true
     password?: true
     avatar?: true
+    role?: true
     accessToken?: true
     restaurantId?: true
     createdAt?: true
@@ -4538,6 +4556,7 @@ export namespace Prisma {
     email?: true
     password?: true
     avatar?: true
+    role?: true
     accessToken?: true
     restaurantId?: true
     createdAt?: true
@@ -4623,6 +4642,7 @@ export namespace Prisma {
     email: string
     password: string
     avatar: string | null
+    role: string
     accessToken: string | null
     restaurantId: string
     createdAt: Date
@@ -4652,6 +4672,7 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     avatar?: boolean
+    role?: boolean
     accessToken?: boolean
     restaurantId?: boolean
     createdAt?: boolean
@@ -4665,6 +4686,7 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     avatar?: boolean
+    role?: boolean
     accessToken?: boolean
     restaurantId?: boolean
     createdAt?: boolean
@@ -4678,6 +4700,7 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     avatar?: boolean
+    role?: boolean
     accessToken?: boolean
     restaurantId?: boolean
     createdAt?: boolean
@@ -4691,13 +4714,14 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     avatar?: boolean
+    role?: boolean
     accessToken?: boolean
     restaurantId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type KitchenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "avatar" | "accessToken" | "restaurantId" | "createdAt" | "updatedAt", ExtArgs["result"]["kitchen"]>
+  export type KitchenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "avatar" | "role" | "accessToken" | "restaurantId" | "createdAt" | "updatedAt", ExtArgs["result"]["kitchen"]>
   export type KitchenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     restaurant?: boolean | restaurantsDefaultArgs<ExtArgs>
   }
@@ -4719,6 +4743,7 @@ export namespace Prisma {
       email: string
       password: string
       avatar: string | null
+      role: string
       accessToken: string | null
       restaurantId: string
       createdAt: Date
@@ -5152,6 +5177,7 @@ export namespace Prisma {
     readonly email: FieldRef<"Kitchen", 'String'>
     readonly password: FieldRef<"Kitchen", 'String'>
     readonly avatar: FieldRef<"Kitchen", 'String'>
+    readonly role: FieldRef<"Kitchen", 'String'>
     readonly accessToken: FieldRef<"Kitchen", 'String'>
     readonly restaurantId: FieldRef<"Kitchen", 'String'>
     readonly createdAt: FieldRef<"Kitchen", 'DateTime'>
@@ -14905,6 +14931,7 @@ export namespace Prisma {
     password: 'password',
     avatar: 'avatar',
     accessToken: 'accessToken',
+    role: 'role',
     restaurantId: 'restaurantId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -14919,6 +14946,7 @@ export namespace Prisma {
     email: 'email',
     password: 'password',
     avatar: 'avatar',
+    role: 'role',
     accessToken: 'accessToken',
     restaurantId: 'restaurantId',
     createdAt: 'createdAt',
@@ -15310,6 +15338,7 @@ export namespace Prisma {
     password?: StringFilter<"Waiter"> | string
     avatar?: StringNullableFilter<"Waiter"> | string | null
     accessToken?: StringNullableFilter<"Waiter"> | string | null
+    role?: StringFilter<"Waiter"> | string
     restaurantId?: StringFilter<"Waiter"> | string
     createdAt?: DateTimeFilter<"Waiter"> | Date | string
     updatedAt?: DateTimeFilter<"Waiter"> | Date | string
@@ -15323,6 +15352,7 @@ export namespace Prisma {
     password?: SortOrder
     avatar?: SortOrderInput | SortOrder
     accessToken?: SortOrderInput | SortOrder
+    role?: SortOrder
     restaurantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15339,6 +15369,7 @@ export namespace Prisma {
     fullName?: StringFilter<"Waiter"> | string
     password?: StringFilter<"Waiter"> | string
     avatar?: StringNullableFilter<"Waiter"> | string | null
+    role?: StringFilter<"Waiter"> | string
     restaurantId?: StringFilter<"Waiter"> | string
     createdAt?: DateTimeFilter<"Waiter"> | Date | string
     updatedAt?: DateTimeFilter<"Waiter"> | Date | string
@@ -15352,6 +15383,7 @@ export namespace Prisma {
     password?: SortOrder
     avatar?: SortOrderInput | SortOrder
     accessToken?: SortOrderInput | SortOrder
+    role?: SortOrder
     restaurantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15370,6 +15402,7 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"Waiter"> | string
     avatar?: StringNullableWithAggregatesFilter<"Waiter"> | string | null
     accessToken?: StringNullableWithAggregatesFilter<"Waiter"> | string | null
+    role?: StringWithAggregatesFilter<"Waiter"> | string
     restaurantId?: StringWithAggregatesFilter<"Waiter"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Waiter"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Waiter"> | Date | string
@@ -15384,6 +15417,7 @@ export namespace Prisma {
     email?: StringFilter<"Kitchen"> | string
     password?: StringFilter<"Kitchen"> | string
     avatar?: StringNullableFilter<"Kitchen"> | string | null
+    role?: StringFilter<"Kitchen"> | string
     accessToken?: StringNullableFilter<"Kitchen"> | string | null
     restaurantId?: StringFilter<"Kitchen"> | string
     createdAt?: DateTimeFilter<"Kitchen"> | Date | string
@@ -15397,6 +15431,7 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     avatar?: SortOrderInput | SortOrder
+    role?: SortOrder
     accessToken?: SortOrderInput | SortOrder
     restaurantId?: SortOrder
     createdAt?: SortOrder
@@ -15414,6 +15449,7 @@ export namespace Prisma {
     fullName?: StringFilter<"Kitchen"> | string
     password?: StringFilter<"Kitchen"> | string
     avatar?: StringNullableFilter<"Kitchen"> | string | null
+    role?: StringFilter<"Kitchen"> | string
     restaurantId?: StringFilter<"Kitchen"> | string
     createdAt?: DateTimeFilter<"Kitchen"> | Date | string
     updatedAt?: DateTimeFilter<"Kitchen"> | Date | string
@@ -15426,6 +15462,7 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     avatar?: SortOrderInput | SortOrder
+    role?: SortOrder
     accessToken?: SortOrderInput | SortOrder
     restaurantId?: SortOrder
     createdAt?: SortOrder
@@ -15444,6 +15481,7 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"Kitchen"> | string
     password?: StringWithAggregatesFilter<"Kitchen"> | string
     avatar?: StringNullableWithAggregatesFilter<"Kitchen"> | string | null
+    role?: StringWithAggregatesFilter<"Kitchen"> | string
     accessToken?: StringNullableWithAggregatesFilter<"Kitchen"> | string | null
     restaurantId?: StringWithAggregatesFilter<"Kitchen"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Kitchen"> | Date | string
@@ -16201,6 +16239,7 @@ export namespace Prisma {
     password: string
     avatar?: string | null
     accessToken?: string | null
+    role?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     restaurant: restaurantsCreateNestedOneWithoutWaiterInput
@@ -16213,6 +16252,7 @@ export namespace Prisma {
     password: string
     avatar?: string | null
     accessToken?: string | null
+    role?: string
     restaurantId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16225,6 +16265,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     restaurant?: restaurantsUpdateOneRequiredWithoutWaiterNestedInput
@@ -16237,6 +16278,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     restaurantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16249,6 +16291,7 @@ export namespace Prisma {
     password: string
     avatar?: string | null
     accessToken?: string | null
+    role?: string
     restaurantId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16261,6 +16304,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16272,6 +16316,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     restaurantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16283,6 +16328,7 @@ export namespace Prisma {
     email: string
     password: string
     avatar?: string | null
+    role?: string
     accessToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16295,6 +16341,7 @@ export namespace Prisma {
     email: string
     password: string
     avatar?: string | null
+    role?: string
     accessToken?: string | null
     restaurantId: string
     createdAt?: Date | string
@@ -16307,6 +16354,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16319,6 +16367,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     restaurantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16331,6 +16380,7 @@ export namespace Prisma {
     email: string
     password: string
     avatar?: string | null
+    role?: string
     accessToken?: string | null
     restaurantId: string
     createdAt?: Date | string
@@ -16343,6 +16393,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16354,6 +16405,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     restaurantId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17241,6 +17293,7 @@ export namespace Prisma {
     password?: SortOrder
     avatar?: SortOrder
     accessToken?: SortOrder
+    role?: SortOrder
     restaurantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -17253,6 +17306,7 @@ export namespace Prisma {
     password?: SortOrder
     avatar?: SortOrder
     accessToken?: SortOrder
+    role?: SortOrder
     restaurantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -17265,6 +17319,7 @@ export namespace Prisma {
     password?: SortOrder
     avatar?: SortOrder
     accessToken?: SortOrder
+    role?: SortOrder
     restaurantId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -17276,6 +17331,7 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     avatar?: SortOrder
+    role?: SortOrder
     accessToken?: SortOrder
     restaurantId?: SortOrder
     createdAt?: SortOrder
@@ -17288,6 +17344,7 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     avatar?: SortOrder
+    role?: SortOrder
     accessToken?: SortOrder
     restaurantId?: SortOrder
     createdAt?: SortOrder
@@ -17300,6 +17357,7 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     avatar?: SortOrder
+    role?: SortOrder
     accessToken?: SortOrder
     restaurantId?: SortOrder
     createdAt?: SortOrder
@@ -19476,6 +19534,7 @@ export namespace Prisma {
     password: string
     avatar?: string | null
     accessToken?: string | null
+    role?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19487,6 +19546,7 @@ export namespace Prisma {
     password: string
     avatar?: string | null
     accessToken?: string | null
+    role?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19507,6 +19567,7 @@ export namespace Prisma {
     email: string
     password: string
     avatar?: string | null
+    role?: string
     accessToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19518,6 +19579,7 @@ export namespace Prisma {
     email: string
     password: string
     avatar?: string | null
+    role?: string
     accessToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19715,6 +19777,7 @@ export namespace Prisma {
     password?: StringFilter<"Waiter"> | string
     avatar?: StringNullableFilter<"Waiter"> | string | null
     accessToken?: StringNullableFilter<"Waiter"> | string | null
+    role?: StringFilter<"Waiter"> | string
     restaurantId?: StringFilter<"Waiter"> | string
     createdAt?: DateTimeFilter<"Waiter"> | Date | string
     updatedAt?: DateTimeFilter<"Waiter"> | Date | string
@@ -19745,6 +19808,7 @@ export namespace Prisma {
     email?: StringFilter<"Kitchen"> | string
     password?: StringFilter<"Kitchen"> | string
     avatar?: StringNullableFilter<"Kitchen"> | string | null
+    role?: StringFilter<"Kitchen"> | string
     accessToken?: StringNullableFilter<"Kitchen"> | string | null
     restaurantId?: StringFilter<"Kitchen"> | string
     createdAt?: DateTimeFilter<"Kitchen"> | Date | string
@@ -21048,6 +21112,7 @@ export namespace Prisma {
     password: string
     avatar?: string | null
     accessToken?: string | null
+    role?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21058,6 +21123,7 @@ export namespace Prisma {
     email: string
     password: string
     avatar?: string | null
+    role?: string
     accessToken?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21197,6 +21263,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21208,6 +21275,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21219,6 +21287,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21229,6 +21298,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21240,6 +21310,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21251,6 +21322,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

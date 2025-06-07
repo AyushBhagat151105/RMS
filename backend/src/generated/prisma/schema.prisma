@@ -61,6 +61,7 @@ model Waiter {
   password     String
   avatar       String?
   accessToken  String?     @unique
+  role         String      @default("WAITER")
   restaurantId String
   restaurant   restaurants @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   createdAt    DateTime    @default(now())
@@ -75,6 +76,7 @@ model Kitchen {
   email        String      @unique
   password     String
   avatar       String?
+  role         String      @default("KITCHEN")
   accessToken  String?     @unique
   restaurantId String
   restaurant   restaurants @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
