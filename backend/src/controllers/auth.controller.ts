@@ -236,6 +236,7 @@ export const getUserProfile = asyncHandler(
         fullName: true,
         isVerified: true,
         avatar: true,
+        role: true,
       },
     });
 
