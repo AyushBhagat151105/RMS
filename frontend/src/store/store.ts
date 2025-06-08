@@ -33,6 +33,8 @@ export interface AuthStore {
   signIn: (data: loginFormDataTypes) => Promise<User | undefined>
   logOut: () => Promise<void>
   verify: (id: string) => Promise<void>
+  waiter: (data: loginFormDataTypes) => Promise<User | undefined>
+  kitchen: (data: loginFormDataTypes) => Promise<User | undefined>
 }
 
 export const useAuthStore = create<AuthStore>()((set) => ({
@@ -111,6 +113,44 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     } catch (error) {
       console.log(error)
       toast.error('Error while verify')
+    } finally {
+      set({ isLoggingIn: false })
+    }
+  },
+
+  waiter: async (data: loginFormDataTypes) => {
+    set({ isLoggingIn: true })
+    try {
+      const res = await axiosInstance.post('/staff/login-waiter', data)
+      if (res.data.data.user.verified) {
+        set({ authUser: res.data.data.user })
+        toast.success('Login successful.')
+        return res.data.data.user
+      } else {
+        toast.success('Please verify your email first.')
+        return res.data.data.user
+      }
+    } catch (error) {
+      toast.error('Error while login')
+    } finally {
+      set({ isLoggingIn: false })
+    }
+  },
+
+  kitchen: async (data: loginFormDataTypes) => {
+    set({ isLoggingIn: true })
+    try {
+      const res = await axiosInstance.post('/staff/login-kitchen', data)
+      if (res.data.data.user.verified) {
+        set({ authUser: res.data.data.user })
+        toast.success('Login successful.')
+        return res.data.data.user
+      } else {
+        toast.success('Please verify your email first.')
+        return res.data.data.user
+      }
+    } catch (error) {
+      toast.error('Error while login')
     } finally {
       set({ isLoggingIn: false })
     }

@@ -1,4 +1,4 @@
-import Login from '@/page/Login'
+import Auth from '@/page/Auth'
 import { createFileRoute } from '@tanstack/react-router'
 
 
@@ -8,8 +8,8 @@ export const Route = createFileRoute('/')({
 
 function App() {
   return (
-    <div className='flex flex-col items-center justify-center h-full w-screen'>
-      <Login />
+    <div className='flex flex-col items-center justify-center h-screen w-screen'>
+      <Auth />
     </div>
   )
 }

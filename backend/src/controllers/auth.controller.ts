@@ -24,17 +24,17 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(500, "User already exists with this email");
   }
 
-  const token = await crypto.randomBytes(32).toString("hex");
-  const sendMail = new MailtrapMailer(email);
-  const verificationLink = `${env.FRONTEND_URL}/verify-email/${token}`;
-  const html = `<p>Click the link below to verify your email:</p>
-  <p>${verificationLink}</p>
-    <a href="${verificationLink}">Verify Email</a>`;
+  // const token = await crypto.randomBytes(32).toString("hex");
+  // const sendMail = new MailtrapMailer(email);
+  // const verificationLink = `${env.FRONTEND_URL}/verify-email/${token}`;
+  // const html = `<p>Click the link below to verify your email:</p>
+  // <p>${verificationLink}</p>
+  //   <a href="${verificationLink}">Verify Email</a>`;
 
-  await sendMail.sendMail({
-    subject: "Verify your email",
-    html: html,
-  });
+  // await sendMail.sendMail({
+  //   subject: "Verify your email",
+  //   html: html,
+  // });
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -44,8 +44,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
       password: hashedPassword,
       username: username,
       fullName: fullName,
-      verificationToken: token,
-      verificationTokenExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      isVerified: true,
     },
   });
   if (!createUser) {
@@ -227,6 +226,17 @@ export const getUserProfile = asyncHandler(
       throw new ApiError(401, "Unauthorized");
     }
 
+    let profile: {
+      id: string;
+      username: string | null;
+      fullName: string;
+      email: string;
+      avatar: string | null;
+      role: string;
+      isVerified: boolean;
+    } | null = null;
+
+    // Try User
     const user = await db.user.findUnique({
       where: { id: userId },
       select: {
@@ -240,13 +250,63 @@ export const getUserProfile = asyncHandler(
       },
     });
 
-    if (!user) {
-      throw new ApiError(404, "User not found");
+    if (user) {
+      profile = user;
+    }
+
+    // Try Waiter
+    if (!profile) {
+      const waiter = await db.waiter.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          fullName: true,
+          email: true,
+          avatar: true,
+          role: true,
+        },
+      });
+
+      if (waiter) {
+        profile = {
+          ...waiter,
+          username: null,
+          isVerified: false,
+        };
+      }
+    }
+
+    // Try Kitchen
+    if (!profile) {
+      const kitchen = await db.kitchen.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          fullName: true,
+          email: true,
+          avatar: true,
+          role: true,
+        },
+      });
+
+      if (kitchen) {
+        profile = {
+          ...kitchen,
+          username: null,
+          isVerified: false,
+        };
+      }
+    }
+
+    if (!profile) {
+      throw new ApiError(404, "User not found in any role");
     }
 
     return res
       .status(200)
-      .json(new ApiResponse(200, "User profile retrieved successfully", user));
+      .json(
+        new ApiResponse(200, "User profile retrieved successfully", profile)
+      );
   }
 );
 
