@@ -1,14 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { loginSchema } from "@/schema/zod"
-import { useForm } from "react-hook-form"
-import type { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@/components/ui/button"
-
+import { loginSchema } from '@/schema/zod'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
+import { Input } from './ui/input'
+import type { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button } from './ui/button'
 
 function Login() {
+
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -27,7 +27,7 @@ function Login() {
 
     return (
         <div>
-            <Card className="mt-15 w-[400px] flex flex-col justify-center">
+            <Card className="w-[400px] flex flex-col justify-center">
                 <CardHeader>
                     <CardTitle className="text-center text-3xl font-bold">Login</CardTitle>
                     <CardDescription className="px-4 text-center m-5">
