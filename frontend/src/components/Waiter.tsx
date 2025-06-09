@@ -6,8 +6,13 @@ import type { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from './ui/button'
+import { useAuthStore } from '@/store/store'
+import { useNavigate } from '@tanstack/react-router'
 
 function Waiter() {
+    // waiter
+    const { waiter, isLoggingIn } = useAuthStore()
+    const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof waiterSchema>>({
         resolver: zodResolver(waiterSchema),
@@ -19,10 +24,17 @@ function Waiter() {
 
     })
 
-    function onSubmit(values: z.infer<typeof waiterSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof waiterSchema>) {
+        try {
+            const res = await waiter(values)
+
+            if (res?.role === "WAITER") {
+                navigate({ to: "/waiter" })
+            }
+        } catch (error) {
+            console.log("Error in login data:- ", error);
+
+        }
     }
 
     return (
@@ -65,7 +77,9 @@ function Waiter() {
 
                                 )}
                             />
-                            <Button type="submit" className="w-full mt-3">Submit</Button>
+                            <Button type="submit" disabled={isLoggingIn} className="w-full mt-3">
+                                {isLoggingIn ? "Logging in..." : "Submit"}
+                            </Button>
                         </form>
                     </Form>
                 </CardContent>

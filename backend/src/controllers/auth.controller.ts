@@ -111,19 +111,28 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(500, "Failed to generate tokens");
   }
 
-  await db.user.update({
+  const profile = await db.user.update({
     where: {
       id: user.id,
     },
     data: {
       accessToken: accessToken,
     },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      fullName: true,
+      isVerified: true,
+      avatar: true,
+      role: true,
+    },
   });
 
   return res
     .status(200)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(200, "Login successful", {}));
+    .json(new ApiResponse(200, "Login successful", profile));
 });
 
 export const logout = asyncHandler(async (req: Request, res: Response) => {

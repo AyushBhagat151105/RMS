@@ -4,11 +4,12 @@ import { create } from 'zustand'
 
 export interface User {
   id?: string
-  name: string
+  username?: string
+  fullName: string
   email: string
-  image?: string
+  avatar?: string
   role?: string
-  verified?: boolean
+  isVerified?: boolean
 }
 
 export interface FormDataTypes {
@@ -48,7 +49,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     try {
       const res = await axiosInstance.get('/auth/me')
       console.log('auth api call')
-      set({ authUser: res.data })
+      set({ authUser: res.data.data })
       console.log('auth user', res.data.data)
     } catch (error) {
       set({ authUser: null })
@@ -57,7 +58,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     }
   },
 
-  signUp: async (data: User) => {
+  signUp: async (data: FormDataTypes) => {
     set({ isSignInUp: true })
 
     try {
@@ -76,13 +77,15 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isLoggingIn: true })
     try {
       const res = await axiosInstance.post('/auth/login', data)
-      if (res.data.data.user.verified) {
-        set({ authUser: res.data.data.user })
+      console.log(res)
+
+      if (res.data.data.isVerified) {
+        set({ authUser: res.data.data })
         toast.success('Login successful.')
-        return res.data.data.user
+        return res.data.data
       } else {
         toast.success('Please verify your email first.')
-        return res.data.data.user
+        return res.data.data
       }
     } catch (error) {
       toast.error('Error while login')
@@ -122,14 +125,10 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isLoggingIn: true })
     try {
       const res = await axiosInstance.post('/staff/login-waiter', data)
-      if (res.data.data.user.verified) {
-        set({ authUser: res.data.data.user })
-        toast.success('Login successful.')
-        return res.data.data.user
-      } else {
-        toast.success('Please verify your email first.')
-        return res.data.data.user
-      }
+      console.log(res)
+
+      set({ authUser: res.data.data })
+      return res.data.data
     } catch (error) {
       toast.error('Error while login')
     } finally {

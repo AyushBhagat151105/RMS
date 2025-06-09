@@ -6,8 +6,12 @@ import type { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from './ui/button'
+import { useAuthStore } from '@/store/store'
+import { useNavigate } from '@tanstack/react-router'
 
 function Login() {
+    const { signIn, isLoggingIn } = useAuthStore()
+    const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -19,10 +23,17 @@ function Login() {
 
     })
 
-    function onSubmit(values: z.infer<typeof loginSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof loginSchema>) {
+        try {
+            const res = await signIn(values)
+
+            if (res?.role === "ADMIN") {
+                navigate({ to: "/admin" })
+            }
+        } catch (error) {
+            console.log("Error in login data:- ", error);
+
+        }
     }
 
     return (
@@ -65,7 +76,10 @@ function Login() {
 
                                 )}
                             />
-                            <Button type="submit" className="w-full mt-3">Submit</Button>
+                            <Button type="submit" disabled={isLoggingIn} className="w-full mt-3">
+                                {isLoggingIn ? "Logging in..." : "Submit"}
+                            </Button>
+
                         </form>
                     </Form>
                 </CardContent>
