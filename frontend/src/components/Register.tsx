@@ -6,9 +6,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 import { Input } from "./ui/input"
 import { Button } from "./ui/button"
+import { useAuthStore } from "@/store/store"
+import { useNavigate } from "@tanstack/react-router"
 
 
 function Register() {
+    const { signUp, isSignInUp } = useAuthStore()
+    const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
@@ -22,10 +26,17 @@ function Register() {
 
     })
 
-    function onSubmit(values: z.infer<typeof registerSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof registerSchema>) {
+        try {
+            const res = await signUp(values)
+
+            if (res?.success === true) {
+                navigate({ to: "/" })
+            }
+        } catch (error) {
+            console.log("Error in login data:- ", error);
+
+        }
     }
     return (
         <div>
@@ -95,7 +106,9 @@ function Register() {
 
                                 )}
                             />
-                            <Button type="submit" className="w-full mt-3">Submit</Button>
+                            <Button type="submit" disabled={isSignInUp} className="w-full mt-3">
+                                {isSignInUp ? "Signing up..." : "Submit"}
+                            </Button>
                         </form>
                     </Form>
                 </CardContent>
