@@ -12,11 +12,18 @@ export interface User {
   isVerified?: boolean
 }
 
+export interface SignUpResponse {
+  statusCode: Number
+  success: boolean
+  message?: string
+  data?: Record<string, any>
+}
+
 export interface FormDataTypes {
-  name: string
+  username: string
   email: string
   password: string
-  confirm_password: string
+  fullName: string
 }
 
 export interface loginFormDataTypes {
@@ -30,7 +37,7 @@ export interface AuthStore {
   isLoggingIn: boolean
   isCheckingAuth: boolean
   checkAuth: () => Promise<void>
-  signUp: (data: FormDataTypes) => Promise<void>
+  signUp: (data: FormDataTypes) => Promise<SignUpResponse | undefined>
   signIn: (data: loginFormDataTypes) => Promise<User | undefined>
   logOut: () => Promise<void>
   verify: (id: string) => Promise<void>
@@ -58,16 +65,17 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     }
   },
 
-  signUp: async (data: FormDataTypes) => {
+  signUp: async (data: FormDataTypes): Promise<SignUpResponse | undefined> => {
     set({ isSignInUp: true })
 
     try {
       const res = await axiosInstance.post('/auth/register', data)
-      console.log(res)
+      console.log(res.data)
+      return res.data as SignUpResponse
     } catch (error) {
       console.log(error)
-      console.log(typeof error)
       toast.error('Error while signUp')
+      return undefined
     } finally {
       set({ isSignInUp: false })
     }

@@ -6,8 +6,12 @@ import type { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from './ui/button'
+import { useAuthStore } from '@/store/store'
+import { useNavigate } from '@tanstack/react-router'
 
 function Kitchen() {
+    const { kitchen, isLoggingIn } = useAuthStore()
+    const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof kitchenSchema>>({
         resolver: zodResolver(kitchenSchema),
@@ -19,10 +23,17 @@ function Kitchen() {
 
     })
 
-    function onSubmit(values: z.infer<typeof kitchenSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof kitchenSchema>) {
+        try {
+            const res = await kitchen(values)
+
+            if (res?.role === "KITCHEN") {
+                navigate({ to: "/kitchen" })
+            }
+        } catch (error) {
+            console.log("Error in login data:- ", error);
+
+        }
     }
 
     return (
@@ -65,7 +76,9 @@ function Kitchen() {
 
                                 )}
                             />
-                            <Button type="submit" className="w-full mt-3">Submit</Button>
+                            <Button type="submit" disabled={isLoggingIn} className="w-full mt-3">
+                                {isLoggingIn ? "Logging in..." : "Submit"}
+                            </Button>
                         </form>
                     </Form>
                 </CardContent>
