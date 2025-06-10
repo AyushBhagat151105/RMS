@@ -1,3 +1,4 @@
+import AdminPanal from '@/components/AdminPanal'
 import { useAuthStore } from '@/store/store'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -13,5 +14,9 @@ export const Route = createFileRoute('/admin/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/admin/"!</div>
+  return (
+    <div className="w-fit mx-auto">
+      <AdminPanal />
+    </div>
+  )
 }
