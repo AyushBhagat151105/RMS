@@ -75,7 +75,7 @@ export const createKitchen = asyncHandler(
 
     return res
       .status(201)
-      .json(new ApiResponse(201, "Waiter created successfully", kitchen));
+      .json(new ApiResponse(201, "Kitchen created successfully", kitchen));
   }
 );
 

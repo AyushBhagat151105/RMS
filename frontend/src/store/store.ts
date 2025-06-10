@@ -136,6 +136,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
       console.log(res)
 
       set({ authUser: res.data.data })
+      toast.success('Login successful.')
       return res.data.data
     } catch (error) {
       toast.error('Error while login')
@@ -148,14 +149,10 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isLoggingIn: true })
     try {
       const res = await axiosInstance.post('/staff/login-kitchen', data)
-      if (res.data.data.user.verified) {
-        set({ authUser: res.data.data.user })
-        toast.success('Login successful.')
-        return res.data.data.user
-      } else {
-        toast.success('Please verify your email first.')
-        return res.data.data.user
-      }
+      console.log(res.data)
+      set({ authUser: res.data.data })
+      toast.success('Login successful.')
+      return res.data.data
     } catch (error) {
       toast.error('Error while login')
     } finally {

@@ -1,8 +1,7 @@
-import AdminPanal from '@/components/AdminPanal'
 import { useAuthStore } from '@/store/store'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/admin/')({
+export const Route = createFileRoute('/admin/menu')({
   beforeLoad: ({ navigate }) => {
     const authUser = useAuthStore.getState().authUser
 
@@ -14,9 +13,5 @@ export const Route = createFileRoute('/admin/')({
 })
 
 function RouteComponent() {
-  return (
-    <div className="w-fit mx-auto">
-      <AdminPanal />
-    </div>
-  )
+  return <div>Hello "/admin/menu"!</div>
 }
