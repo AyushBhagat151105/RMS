@@ -142,10 +142,45 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(401, "Unauthorized");
   }
 
-  await db.user.update({
-    where: { id: userId },
-    data: { accessToken: null },
-  });
+  let found = false;
+
+  // Try User
+  const user = await db.user.findUnique({ where: { id: userId } });
+  if (user) {
+    await db.user.update({
+      where: { id: userId },
+      data: { accessToken: null },
+    });
+    found = true;
+  }
+
+  // Try Waiter
+  if (!found) {
+    const waiter = await db.waiter.findUnique({ where: { id: userId } });
+    if (waiter) {
+      await db.waiter.update({
+        where: { id: userId },
+        data: { accessToken: null },
+      });
+      found = true;
+    }
+  }
+
+  // Try Kitchen
+  if (!found) {
+    const kitchen = await db.kitchen.findUnique({ where: { id: userId } });
+    if (kitchen) {
+      await db.kitchen.update({
+        where: { id: userId },
+        data: { accessToken: null },
+      });
+      found = true;
+    }
+  }
+
+  if (!found) {
+    throw new ApiError(404, "User not found in any role");
+  }
 
   return res
     .status(200)

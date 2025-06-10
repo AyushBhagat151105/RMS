@@ -1,62 +1,26 @@
 import { Link } from "@tanstack/react-router"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar"
-import { Album, ChevronDown, ListOrdered, PanelBottom, Table, Users } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import { ListOrdered, PanelBottom } from "lucide-react"
 import LogoutButton from "./Logout"
 
 const items = [
     {
         title: "Deshboard",
-        url: "/admin",
+        url: "/kitchen",
         icon: PanelBottom,
     },
     {
-        title: "Staff",
-        url: "/admin/staff",
-        icon: Users,
-    },
-    {
-        title: "Tables",
-        url: "/admin/tables",
-        icon: Table,
-    },
-    {
-        title: "Menu",
-        url: "/admin/menu",
-        icon: Album,
-    },
-    {
         title: "Order",
-        url: "/admin/order",
+        url: "/kitchen/order",
         icon: ListOrdered,
     },
 ]
 
-function AdminSidebar() {
+function KitchenSidebar() {
     return (
         <Sidebar>
             <SidebarHeader>
                 <p className="text-lg font-semibold">Kitchen panal</p>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <DropdownMenu >
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton>
-                                    Select Resturent
-                                    <ChevronDown className="ml-auto" />
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                                <DropdownMenuItem>
-                                    <span>Acme Inc</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <span>Acme Corp.</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
@@ -84,4 +48,4 @@ function AdminSidebar() {
     )
 }
 
-export default AdminSidebar
+export default KitchenSidebar
