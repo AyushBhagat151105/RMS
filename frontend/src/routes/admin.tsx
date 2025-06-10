@@ -1,4 +1,4 @@
-import AdminSidebar from '@/components/adminSidebar'
+import AdminSidebar from '@/components/AdminSidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 

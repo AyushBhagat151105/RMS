@@ -1,37 +1,61 @@
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar"
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Link } from "@tanstack/react-router"
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar"
+import { Album, ChevronDown, ListOrdered, PanelBottom, Table, Users } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
 
 const items = [
     {
-        title: "Home",
+        title: "Deshboard",
+        url: "/admin",
+        icon: PanelBottom,
+    },
+    {
+        title: "Staff",
         url: "/admin/staff",
-        icon: Home,
+        icon: Users,
     },
     {
-        title: "Inbox",
-        url: "#",
-        icon: Inbox,
+        title: "Tables",
+        url: "/admin/tables",
+        icon: Table,
     },
     {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
+        title: "Menu",
+        url: "/admin/menu",
+        icon: Album,
     },
     {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
-    {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
+        title: "Order",
+        url: "/admin/order",
+        icon: ListOrdered,
     },
 ]
 
 function AdminSidebar() {
     return (
         <Sidebar>
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <DropdownMenu >
+                            <DropdownMenuTrigger asChild>
+                                <SidebarMenuButton>
+                                    Select Resturent
+                                    <ChevronDown className="ml-auto" />
+                                </SidebarMenuButton>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
+                                <DropdownMenuItem>
+                                    <span>Acme Inc</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <span>Acme Corp.</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -40,10 +64,10 @@ function AdminSidebar() {
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
-                                        <a href={item.url}>
+                                        <Link to={item.url}>
                                             <item.icon />
                                             <span>{item.title}</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}

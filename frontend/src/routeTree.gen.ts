@@ -17,7 +17,10 @@ import { Route as WaiterIndexImport } from './routes/waiter/index'
 import { Route as RestaurantsIndexImport } from './routes/restaurants/index'
 import { Route as KitchenIndexImport } from './routes/kitchen/index'
 import { Route as AdminIndexImport } from './routes/admin/index'
+import { Route as AdminTablesImport } from './routes/admin/tables'
 import { Route as AdminStaffImport } from './routes/admin/staff'
+import { Route as AdminOrderImport } from './routes/admin/order'
+import { Route as AdminMenuImport } from './routes/admin/menu'
 import { Route as RestaurantsRestaurantsIdRestaurantImport } from './routes/restaurants_/$restaurantsId/restaurant'
 
 // Create/Update Routes
@@ -58,9 +61,27 @@ const AdminIndexRoute = AdminIndexImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
+const AdminTablesRoute = AdminTablesImport.update({
+  id: '/tables',
+  path: '/tables',
+  getParentRoute: () => AdminRoute,
+} as any)
+
 const AdminStaffRoute = AdminStaffImport.update({
   id: '/staff',
   path: '/staff',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminOrderRoute = AdminOrderImport.update({
+  id: '/order',
+  path: '/order',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminMenuRoute = AdminMenuImport.update({
+  id: '/menu',
+  path: '/menu',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -89,11 +110,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
+    '/admin/menu': {
+      id: '/admin/menu'
+      path: '/menu'
+      fullPath: '/admin/menu'
+      preLoaderRoute: typeof AdminMenuImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/order': {
+      id: '/admin/order'
+      path: '/order'
+      fullPath: '/admin/order'
+      preLoaderRoute: typeof AdminOrderImport
+      parentRoute: typeof AdminImport
+    }
     '/admin/staff': {
       id: '/admin/staff'
       path: '/staff'
       fullPath: '/admin/staff'
       preLoaderRoute: typeof AdminStaffImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/tables': {
+      id: '/admin/tables'
+      path: '/tables'
+      fullPath: '/admin/tables'
+      preLoaderRoute: typeof AdminTablesImport
       parentRoute: typeof AdminImport
     }
     '/admin/': {
@@ -137,12 +179,18 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AdminRouteChildren {
+  AdminMenuRoute: typeof AdminMenuRoute
+  AdminOrderRoute: typeof AdminOrderRoute
   AdminStaffRoute: typeof AdminStaffRoute
+  AdminTablesRoute: typeof AdminTablesRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminMenuRoute: AdminMenuRoute,
+  AdminOrderRoute: AdminOrderRoute,
   AdminStaffRoute: AdminStaffRoute,
+  AdminTablesRoute: AdminTablesRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -151,7 +199,10 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/menu': typeof AdminMenuRoute
+  '/admin/order': typeof AdminOrderRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/admin/tables': typeof AdminTablesRoute
   '/admin/': typeof AdminIndexRoute
   '/kitchen': typeof KitchenIndexRoute
   '/restaurants': typeof RestaurantsIndexRoute
@@ -161,7 +212,10 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/menu': typeof AdminMenuRoute
+  '/admin/order': typeof AdminOrderRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/admin/tables': typeof AdminTablesRoute
   '/admin': typeof AdminIndexRoute
   '/kitchen': typeof KitchenIndexRoute
   '/restaurants': typeof RestaurantsIndexRoute
@@ -173,7 +227,10 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/menu': typeof AdminMenuRoute
+  '/admin/order': typeof AdminOrderRoute
   '/admin/staff': typeof AdminStaffRoute
+  '/admin/tables': typeof AdminTablesRoute
   '/admin/': typeof AdminIndexRoute
   '/kitchen/': typeof KitchenIndexRoute
   '/restaurants/': typeof RestaurantsIndexRoute
@@ -186,7 +243,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/admin/menu'
+    | '/admin/order'
     | '/admin/staff'
+    | '/admin/tables'
     | '/admin/'
     | '/kitchen'
     | '/restaurants'
@@ -195,7 +255,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/menu'
+    | '/admin/order'
     | '/admin/staff'
+    | '/admin/tables'
     | '/admin'
     | '/kitchen'
     | '/restaurants'
@@ -205,7 +268,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/admin/menu'
+    | '/admin/order'
     | '/admin/staff'
+    | '/admin/tables'
     | '/admin/'
     | '/kitchen/'
     | '/restaurants/'
@@ -257,12 +323,27 @@ export const routeTree = rootRoute
     "/admin": {
       "filePath": "admin.tsx",
       "children": [
+        "/admin/menu",
+        "/admin/order",
         "/admin/staff",
+        "/admin/tables",
         "/admin/"
       ]
     },
+    "/admin/menu": {
+      "filePath": "admin/menu.tsx",
+      "parent": "/admin"
+    },
+    "/admin/order": {
+      "filePath": "admin/order.tsx",
+      "parent": "/admin"
+    },
     "/admin/staff": {
       "filePath": "admin/staff.tsx",
+      "parent": "/admin"
+    },
+    "/admin/tables": {
+      "filePath": "admin/tables.tsx",
       "parent": "/admin"
     },
     "/admin/": {
