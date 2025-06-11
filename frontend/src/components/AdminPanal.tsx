@@ -1,6 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import GreetingCard from "./GreetingCard"
 import { Card } from './ui/card'
+import Order from '@/page/Order'
 
 const dummyData = [
     { name: 'Jan', users: 40 },
@@ -11,6 +12,7 @@ const dummyData = [
 ]
 
 function AdminPanal() {
+
 
     return (
         <div className="w-full px-4 md:px-8 py-6 space-y-8">
@@ -46,13 +48,7 @@ function AdminPanal() {
 
             {/* Recent Activity */}
             <Card className="p-4 shadow border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Activity</h3>
-                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                    <li>✅ Admin logged in at 10:24 AM</li>
-                    <li>📦 New user registered (john@example.com)</li>
-                    <li>🛠️ Settings updated by Admin</li>
-                    <li>📊 Report viewed</li>
-                </ul>
+                <Order />
             </Card>
         </div>
     )

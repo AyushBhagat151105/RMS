@@ -1,7 +1,8 @@
+import Order from '@/page/Order'
 import { useAuthStore } from '@/store/store'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/admin/order')({
+export const Route = createFileRoute('/admin/$rId/order')({
   beforeLoad: ({ navigate }) => {
     const authUser = useAuthStore.getState().authUser
 
@@ -12,6 +13,16 @@ export const Route = createFileRoute('/admin/order')({
   component: RouteComponent,
 })
 
+
+
 function RouteComponent() {
-  return <div>Hello "/admin/order"!</div>
+
+
+  return (
+
+    <div className='flex'>
+      <Order />
+    </div>
+
+  )
 }

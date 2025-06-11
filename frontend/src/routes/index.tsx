@@ -1,4 +1,5 @@
 import Auth from '@/page/Auth'
+import { useRestaurantStore } from '@/store/restaurant'
 import { useAuthStore } from '@/store/store'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
@@ -11,9 +12,12 @@ export const Route = createFileRoute('/')({
 function App() {
   const navigate = useNavigate()
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore()
+  const { getRestaurants } = useRestaurantStore()
 
   useEffect(() => {
     checkAuth()
+    getRestaurants()
+
   }, [])
 
   useEffect(() => {
