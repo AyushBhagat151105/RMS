@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { getOrders } from "@/hooks/query";
 import { useRestaurantStore } from "@/store/restaurant";
 import { useQuery } from "@tanstack/react-query";
@@ -9,29 +10,62 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { toast } from "sonner";
 
 function Order() {
     const { selectedRestaurantId } = useRestaurantStore();
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const prevOrderIdsRef = useRef<Set<string>>(new Set());
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ["orders"],
-        queryFn: async () => {
-            return await getOrders(selectedRestaurantId as string);
-        },
-        refetchInterval: 1000 * 60 * 5, // 5M
+        queryKey: ["orders", selectedRestaurantId],
+        queryFn: () => getOrders(selectedRestaurantId as string),
+        refetchInterval: 10000,
         refetchOnWindowFocus: true,
         enabled: !!selectedRestaurantId,
     });
+
+    const orders = data?.data || [];
+
+    useEffect(() => {
+        if (!orders.length) return;
+
+        const currentOrderIds = new Set<string>(
+            orders.map((order: { id: string }) => order.id)
+        );
+        const previousOrderIds = prevOrderIdsRef.current;
+
+        let hasNewOrder = false;
+
+        for (const id of currentOrderIds) {
+            if (!previousOrderIds.has(id)) {
+                hasNewOrder = true;
+                break;
+            }
+        }
+
+        if (hasNewOrder && previousOrderIds.size > 0) {
+            toast.success("🔔 New order received!");
+            audioRef.current?.play().catch((err) => {
+                console.error("Audio playback failed:", err);
+            });
+        }
+
+        prevOrderIdsRef.current = currentOrderIds;
+    }, [orders]);
+
 
     if (!selectedRestaurantId) return <p>Please select a restaurant</p>;
     if (isLoading) return <p>Loading...</p>;
     if (isError) return <p>Error loading orders</p>;
 
-    const orders = data?.data || [];
-
     return (
-        <div className="p-4 w-screen md:w-[1120px]">
+        <div className="p-4 w-full md:w-[1180px]">
             <h1 className="text-xl font-semibold mb-4">Orders</h1>
+
+            {/* Audio element */}
+            <audio ref={audioRef} src="/notification.mp3" preload="auto" />
+
             <Table>
                 <TableHeader>
                     <TableRow>
