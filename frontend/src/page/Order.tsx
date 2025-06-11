@@ -66,7 +66,7 @@ function Order() {
     }, [orders]);
 
     return (
-        <div className="p-4 w-screen md:w-[1180px]">
+        <div className="p-4 w-screen md:w-[1120px]">
             <h1 className="text-xl font-semibold mb-4">Orders</h1>
 
             {/* Audio element */}
