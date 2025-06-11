@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { getOrders } from "@/hooks/query";
 import { useRestaurantStore } from "@/store/restaurant";
 import { useQuery } from "@tanstack/react-query";
@@ -59,6 +59,12 @@ function Order() {
     if (isLoading) return <p>Loading...</p>;
     if (isError) return <p>Error loading orders</p>;
 
+    const sortedOrders = useMemo(() => {
+        return [...orders].sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+    }, [orders]);
+
     return (
         <div className="p-4 w-screen md:w-[1180px]">
             <h1 className="text-xl font-semibold mb-4">Orders</h1>
@@ -79,7 +85,7 @@ function Order() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {orders.map((order: any) => (
+                    {sortedOrders.map((order: any) => (
                         <TableRow key={order.id}>
                             <TableCell className="font-mono text-xs">{order.id}</TableCell>
                             <TableCell>{order.user.fullName}</TableCell>
