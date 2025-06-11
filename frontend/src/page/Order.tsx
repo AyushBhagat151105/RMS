@@ -60,7 +60,7 @@ function Order() {
     if (isError) return <p>Error loading orders</p>;
 
     return (
-        <div className="p-4 w-full md:w-[1180px]">
+        <div className="p-4 w-screen md:w-[1180px]">
             <h1 className="text-xl font-semibold mb-4">Orders</h1>
 
             {/* Audio element */}
