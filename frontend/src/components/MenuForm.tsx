@@ -33,7 +33,7 @@ function MenuForm({ type, defaultValues, menuId }: MenuFormProps) {
     const form = useForm<MenuFormInput>({
         resolver: zodResolver(menuInputSchema),
         defaultValues: {
-            restaurantId: selectedRestaurantId || "",
+            restaurantId: selectedRestaurantId?.id || "",
             name: defaultValues?.name || "",
             description: defaultValues?.description || "",
             price: defaultValues?.price || "",
@@ -45,7 +45,7 @@ function MenuForm({ type, defaultValues, menuId }: MenuFormProps) {
     useEffect(() => {
         if (defaultValues) {
             form.reset({
-                restaurantId: selectedRestaurantId as string,
+                restaurantId: selectedRestaurantId?.id as string,
                 ...defaultValues,
                 imageUrl: undefined as unknown as File,
             })

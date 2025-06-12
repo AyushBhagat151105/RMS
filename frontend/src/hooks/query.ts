@@ -45,3 +45,36 @@ export const chengeMenuAvailability = async (id: string) => {
 
   return res.data
 }
+
+export const getAllTable = async (id: string) => {
+  const res = await axiosInstance.get(`/table/get-all-table/${id}`)
+
+  return res.data
+}
+
+export const createTable = async (data: {
+  number: number
+  capacity: number
+  restaurantId: string
+}) => {
+  const res = await axiosInstance.post('/table/create', data)
+  return res.data
+}
+
+export const updateTable = async (
+  data: {
+    number: number
+    capacity: number
+    restaurantId: string
+  },
+  id: string,
+) => {
+  const res = await axiosInstance.put(`/table/update/${id}`, data)
+  return res.data
+}
+
+export const deleteTable = async (id: string) => {
+  const res = await axiosInstance.delete(`/table/delete/${id}`)
+
+  return res.data
+}
