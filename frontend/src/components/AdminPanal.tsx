@@ -2,6 +2,8 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recha
 import GreetingCard from "./GreetingCard"
 import { Card } from './ui/card'
 import Order from '@/page/Order'
+import { useEffect } from 'react'
+import { useRestaurantStore } from '@/store/restaurant'
 
 const dummyData = [
     { name: 'Jan', users: 40 },
@@ -13,27 +15,40 @@ const dummyData = [
 
 function AdminPanal() {
 
+    const { getRestaurants } = useRestaurantStore()
+
+    useEffect(() => {
+        getRestaurants()
+    }, [])
+
 
     return (
-        <div className="w-full px-4 md:px-8 py-6 space-y-8">
+        <div className="w-full px-4 sm:px-6 md:px-8 py-6 space-y-8">
             {/* Greeting Card */}
             <div>
                 <GreetingCard />
             </div>
 
             {/* Stats Section */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {['Users', 'Posts', 'Messages'].map((label, i) => (
-                    <Card key={i} className="bg-white dark:bg-gray-900 shadow border border-gray-200 dark:border-gray-700 p-4">
+                    <Card
+                        key={i}
+                        className="bg-white dark:bg-gray-900 shadow border border-gray-200 dark:border-gray-700 p-4"
+                    >
                         <div className="text-sm text-gray-500 dark:text-gray-400">{label}</div>
-                        <div className="text-2xl font-bold text-gray-900 dark:text-white">{Math.floor(Math.random() * 1000)}</div>
+                        <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                            {Math.floor(Math.random() * 1000)}
+                        </div>
                     </Card>
                 ))}
             </div>
 
             {/* Chart Section */}
             <Card className="p-4 shadow border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">User Growth (Past 5 Months)</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    User Growth (Past 5 Months)
+                </h3>
                 <div className="w-full h-64">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={dummyData}>
@@ -47,11 +62,12 @@ function AdminPanal() {
             </Card>
 
             {/* Recent Activity */}
-            <Card className="p-4 shadow border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+            <Card className="p-4 shadow border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-x-auto">
                 <Order />
             </Card>
         </div>
     )
+
 }
 
 export default AdminPanal

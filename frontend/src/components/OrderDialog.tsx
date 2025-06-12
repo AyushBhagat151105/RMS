@@ -7,8 +7,11 @@ import {
 } from "@/components/ui/dialog";
 import type { Order } from "@/types/types";
 
-
-export default function OrderDialog({ open, onOpenChange, order }: {
+export default function OrderDialog({
+    open,
+    onOpenChange,
+    order,
+}: {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     order: Order | null;
@@ -17,29 +20,54 @@ export default function OrderDialog({ open, onOpenChange, order }: {
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-xl">
+            <DialogContent className="max-w-xl p-6 space-y-6">
                 <DialogHeader>
-                    <DialogTitle>Order Details</DialogTitle>
-                    <DialogDescription>Order ID: {order.id}</DialogDescription>
+                    <DialogTitle className="text-2xl font-semibold">Order Details</DialogTitle>
+                    <DialogDescription className="text-sm text-muted-foreground">
+                        Order ID: <span className="font-mono">{order.id}</span>
+                    </DialogDescription>
                 </DialogHeader>
 
-                <div className="mt-4 space-y-2">
-                    <p><strong>Customer:</strong> {order.user.fullName}</p>
-                    <p><strong>Table:</strong> #{order.table.number}</p>
-                    <p><strong>Status:</strong> {order.status}</p>
-                    <p><strong>Total:</strong> ₹{order.total}</p>
-                    <p><strong>Items:</strong></p>
-                    <ul className="pl-4 list-disc">
+                {/* Customer & Table Info */}
+                <div className="space-y-2 border-b pb-4">
+                    <p><span className="font-medium">Customer:</span> {order.user.fullName}</p>
+                    <p><span className="font-medium">Table:</span> #{order.table.number}</p>
+                    <div className="flex items-center gap-2">
+                        <span className="font-medium">Status:</span>
+                        <span
+                            className={`px-2 py-1 rounded text-xs font-semibold ${order.status === "COMPLETED"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-yellow-100 text-yellow-800"
+                                }`}
+                        >
+                            {order.status}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Summary */}
+                <div className="space-y-2 border-b pb-4">
+                    <p className="text-lg font-semibold text-foreground">Order Summary</p>
+                    <p><span className="font-medium">Total:</span> ₹{order.total}</p>
+                </div>
+
+                {/* Items List */}
+                <div>
+                    <p className="text-lg font-semibold mb-2">Items</p>
+                    <ul className="space-y-3">
                         {order.Order_Item.map((item) => (
-                            <li key={item.id} className="flex gap-2 items-center">
+                            <li key={item.id} className="flex items-center gap-4">
                                 <img
                                     src={item.menuItem.imageUrl}
                                     alt={item.menuItem.name}
-                                    width={40}
-                                    height={40}
-                                    className="rounded"
+                                    width={48}
+                                    height={48}
+                                    className="rounded-md border object-cover"
                                 />
-                                {item.menuItem.name} × {item.quantity}
+                                <div>
+                                    <p className="font-medium">{item.menuItem.name}</p>
+                                    <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
+                                </div>
                             </li>
                         ))}
                     </ul>

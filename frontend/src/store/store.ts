@@ -96,7 +96,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
         return res.data.data
       }
     } catch (error) {
-      toast.error('Error while login')
+      toast.error(`Error while login ${error}`)
     } finally {
       set({ isLoggingIn: false })
     }
