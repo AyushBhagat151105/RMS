@@ -29,46 +29,53 @@ import {
 } from "./ui/dropdown-menu"
 import LogoutButton from "./Logout"
 import ThemeToggle from "./ThemeToggle"
+import { useRestaurantStore } from "@/store/restaurant"
 
-const items = [
-    {
-        title: "Dashboard",
-        url: "/admin",
-        icon: PanelBottom,
-    },
-    {
-        title: "Staff",
-        icon: Users,
-        children: [
-            {
-                title: "Waiter",
-                url: "/admin/staff/waiter",
-            },
-            {
-                title: "Kitchen",
-                url: "/admin/staff/kitchen",
-            },
-        ],
-    },
-    {
-        title: "Tables",
-        url: "/admin/tables",
-        icon: Table,
-    },
-    {
-        title: "Menu",
-        url: "/admin/menu",
-        icon: Album,
-    },
-    {
-        title: "Order",
-        url: "/admin/order",
-        icon: ListOrdered,
-    },
-]
+
 
 function AdminSidebar() {
+
+
+
     const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({})
+    const { restaurants, selectedRestaurantId, selectRestaurant } = useRestaurantStore()
+
+    const items = [
+        {
+            title: "Dashboard",
+            url: "/admin",
+            icon: PanelBottom,
+        },
+        {
+            title: "Staff",
+            icon: Users,
+            children: [
+                {
+                    title: "Waiter",
+                    url: "/admin/staff/waiter",
+                },
+                {
+                    title: "Kitchen",
+                    url: "/admin/staff/kitchen",
+                },
+            ],
+        },
+        {
+            title: "Tables",
+            url: "/admin/tables",
+            icon: Table,
+        },
+        {
+            title: "Menu",
+            url: "/admin/menu",
+            icon: Album,
+        },
+        {
+            title: "Order",
+            url: `/admin/${selectedRestaurantId}/order`,
+            icon: ListOrdered,
+        },
+    ]
 
     const toggleSection = (title: string) => {
         setOpenSections((prev) => ({
@@ -76,6 +83,9 @@ function AdminSidebar() {
             [title]: !prev[title],
         }))
     }
+
+    const selectedRestaurantName = restaurants.find(r => r.id === selectedRestaurantId)?.name || "Select Restaurant"
+
 
     return (
         <Sidebar>
@@ -86,13 +96,19 @@ function AdminSidebar() {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <SidebarMenuButton>
-                                    Select Restaurant
+                                    {selectedRestaurantName}
                                     <ChevronDown className="ml-auto" />
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                                <DropdownMenuItem>Acme Inc</DropdownMenuItem>
-                                <DropdownMenuItem>Acme Corp.</DropdownMenuItem>
+                                {restaurants.map((restaurant) => (
+                                    <DropdownMenuItem
+                                        key={restaurant.id}
+                                        onClick={() => selectRestaurant(restaurant.id)}
+                                    >
+                                        {restaurant.name}
+                                    </DropdownMenuItem>
+                                ))}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </SidebarMenuItem>

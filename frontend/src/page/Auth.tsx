@@ -10,7 +10,7 @@ function Auth() {
 
     return (
         <div>
-            <Tabs defaultValue="Login" className="w-[400px]">
+            <Tabs defaultValue="Login" className="w-[400px] px-4">
                 <TabsList>
                     <TabsTrigger value="Login">Login</TabsTrigger>
                     <TabsTrigger value="Register">Register</TabsTrigger>

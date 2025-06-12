@@ -33,6 +33,17 @@ app.use("/api/v1/table", tableRouter);
 app.use("/api/v1/menu", menuRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/staff", staffRouter);
+const isDev = process.env.NODE_ENV === "development";
+app.get("/api/v1/test-cookie", (req, res) => {
+  res
+    .cookie("myTestCookie", "hello", {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: false,
+      maxAge: 1000 * 60 * 10,
+    })
+    .send("Cookie Set!");
+});
 
 app.get("/", (req, res) => {
   res.status(200).json("It is up and running...");
