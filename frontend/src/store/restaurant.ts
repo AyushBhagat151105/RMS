@@ -10,12 +10,17 @@ type Restaurants = {
   logoUrl?: string
 }
 
+type selectedRestaurantId = {
+  id: string
+  name: string
+}
+
 type RestaurantState = {
   restaurants: Restaurants[]
-  selectedRestaurantId: string | null
+  selectedRestaurantId: selectedRestaurantId | null
 
   getRestaurants: () => Promise<any>
-  selectRestaurant: (id: string) => void
+  selectRestaurant: (id: string, name: string) => void
 }
 
 export const useRestaurantStore = create<RestaurantState>()((set) => ({
@@ -31,8 +36,8 @@ export const useRestaurantStore = create<RestaurantState>()((set) => ({
     }
   },
 
-  selectRestaurant: (id: string) => {
+  selectRestaurant: (id: string, name: string) => {
     // localStorage.setItem('selectedRestaurantId', id)
-    set({ selectedRestaurantId: id })
+    set({ selectedRestaurantId: { id, name } })
   },
 }))

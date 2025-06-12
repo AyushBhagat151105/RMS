@@ -84,7 +84,7 @@ function AdminSidebar() {
         }))
     }
 
-    const selectedRestaurantName = restaurants.find(r => r.id === selectedRestaurantId)?.name || "Select Restaurant"
+    const selectedRestaurantName = restaurants.find(r => r.id === selectedRestaurantId?.id)?.name || "Select Restaurant"
 
 
     return (
@@ -104,7 +104,7 @@ function AdminSidebar() {
                                 {restaurants.map((restaurant) => (
                                     <DropdownMenuItem
                                         key={restaurant.id}
-                                        onClick={() => selectRestaurant(restaurant.id)}
+                                        onClick={() => selectRestaurant(restaurant.id, restaurant.name)}
                                     >
                                         {restaurant.name}
                                     </DropdownMenuItem>

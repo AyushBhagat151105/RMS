@@ -1,3 +1,4 @@
+import TableList from '@/components/TableList'
 import { useAuthStore } from '@/store/store'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -13,5 +14,7 @@ export const Route = createFileRoute('/admin/tables')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/admin/tables"!</div>
+  return <div className='flex w-screen h-screen'>
+    <TableList />
+  </div>
 }

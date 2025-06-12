@@ -21,7 +21,7 @@ function RouteComponent() {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['get-all-menus'],
-    queryFn: () => getMenus(selectedRestaurantId as string),
+    queryFn: () => getMenus(selectedRestaurantId?.id as string),
     enabled: !!selectedRestaurantId,
   })
 

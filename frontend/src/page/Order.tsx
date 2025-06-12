@@ -23,7 +23,7 @@ export default function Order() {
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ["orders", selectedRestaurantId],
-        queryFn: () => getOrders(selectedRestaurantId as string),
+        queryFn: () => getOrders(selectedRestaurantId?.id as string),
         refetchInterval: 10000,
         refetchOnWindowFocus: true,
         enabled: !!selectedRestaurantId,
