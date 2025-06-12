@@ -15,9 +15,9 @@ export const Route = createFileRoute('/admin')({
 
 function RouteComponent() {
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider>
       <AdminSidebar />
-      <main>
+      <main className='flex w-screen h-screen'>
         <SidebarTrigger />
         <Outlet />
       </main>
