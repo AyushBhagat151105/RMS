@@ -14,30 +14,28 @@ const dummyData = [
 ]
 
 function AdminPanal() {
-
     const { getRestaurants } = useRestaurantStore()
 
     useEffect(() => {
         getRestaurants()
     }, [])
 
-
     return (
-        <div className="w-full px-4 sm:px-6 md:px-8 py-6 space-y-8">
+        <div className="lg:w-full sm:w-screen sm:px-6 lg:px-8 py-6 space-y-8 max-w-7xl mx-auto">
             {/* Greeting Card */}
             <div>
                 <GreetingCard />
             </div>
 
             {/* Stats Section */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {['Users', 'Posts', 'Messages'].map((label, i) => (
                     <Card
                         key={i}
                         className="bg-white dark:bg-gray-900 shadow border border-gray-200 dark:border-gray-700 p-4"
                     >
-                        <div className="text-sm text-gray-500 dark:text-gray-400">{label}</div>
-                        <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                        <div className="text-sm sm:text-base text-gray-500 dark:text-gray-400">{label}</div>
+                        <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                             {Math.floor(Math.random() * 1000)}
                         </div>
                     </Card>
@@ -67,7 +65,6 @@ function AdminPanal() {
             </Card>
         </div>
     )
-
 }
 
 export default AdminPanal

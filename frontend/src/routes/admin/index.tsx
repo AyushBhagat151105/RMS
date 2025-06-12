@@ -15,7 +15,7 @@ export const Route = createFileRoute('/admin/')({
 
 function RouteComponent() {
   return (
-    <div className="w-fit mx-auto">
+    <div>
       <AdminPanal />
     </div>
   )

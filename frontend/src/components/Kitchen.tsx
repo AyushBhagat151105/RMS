@@ -37,7 +37,7 @@ function Kitchen() {
     }
 
     return (
-        <div>
+        <div className='flex justify-center items-center'>
             <Card className="w-[400px] flex flex-col justify-center">
                 <CardHeader>
                     <CardTitle className="text-center text-3xl font-bold">Kitchen Login</CardTitle>

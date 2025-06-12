@@ -37,8 +37,8 @@ function Login() {
     }
 
     return (
-        <div>
-            <Card className="w-[400px] flex flex-col justify-center">
+        <div className="flex justify-center items-center">
+            <Card className="w-full max-w-sm sm:max-w-md p-4 shadow-md">
                 <CardHeader>
                     <CardTitle className="text-center text-3xl font-bold">Login</CardTitle>
                     <CardDescription className="px-4 text-center m-5">
