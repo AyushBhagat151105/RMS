@@ -7,3 +7,13 @@ export const getOrders = async (id: string) => {
 
   return res.data
 }
+
+export const postMenu = async (data: FormData) => {
+  const res = await axiosInstance.post('/menu/create-menu', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+
+  return res.data
+}

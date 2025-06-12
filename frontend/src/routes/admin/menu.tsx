@@ -1,3 +1,4 @@
+import MenuForm from '@/components/MenuForm'
 import { useAuthStore } from '@/store/store'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -13,5 +14,7 @@ export const Route = createFileRoute('/admin/menu')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/admin/menu"!</div>
+  return <div>Hello "/admin/menu"!
+    <MenuForm />
+  </div>
 }
