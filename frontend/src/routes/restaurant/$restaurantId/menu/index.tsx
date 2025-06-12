@@ -5,7 +5,7 @@ import {
 } from '@/components/ui/sheet'
 import { useMenuStore } from '@/store/useMenuStore'
 import { createFileRoute } from '@tanstack/react-router'
-import Cart from '../Cart'
+
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { ShoppingBasket } from 'lucide-react'
+import Cart from '@/components/Cart'
 
 export const Route = createFileRoute('/restaurant/$restaurantId/menu/')({
   component: RouteComponent,

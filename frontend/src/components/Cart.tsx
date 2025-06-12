@@ -1,16 +1,12 @@
 import { Sheet, SheetClose } from "@/components/ui/sheet";
 import { useMenuStore } from "@/store/useMenuStore";
-import { createFileRoute } from "@tanstack/react-router";
-import RouteComponent from "./menu";
 
-export const Route = createFileRoute('/restaurant/$restaurantId/Cart')({
-  component: RouteComponent,
-})
+
 
 
 function Cart() {
   const { items, removeItem, clearCart } = useMenuStore();
-  
+
   const totalPrice = items?.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -29,8 +25,8 @@ function Cart() {
               <ul className="space-y-4">
                 {items?.map((item) => (
                   <li
-                  key={item.id}
-                  className="flex items-center justify-between bg-white shadow p-4 rounded-lg"
+                    key={item.id}
+                    className="flex items-center justify-between bg-white shadow p-4 rounded-lg"
                   >
                     <div>
                       <h2 className="font-semibold text-lg">{item.name}</h2>
@@ -45,7 +41,7 @@ function Cart() {
                       <button
                         onClick={() => removeItem(item.id)}
                         className="text-red-500 hover:underline text-sm font-semibold cursor-pointer"
-                        >
+                      >
                         Remove
                       </button>
                     </div>
@@ -60,7 +56,7 @@ function Cart() {
                 <button
                   onClick={clearCart}
                   className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold cursor-pointer"
-                  >
+                >
                   Clear Cart
                 </button>
               </div>
