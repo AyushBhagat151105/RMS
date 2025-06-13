@@ -1,4 +1,5 @@
-import Waiter from '@/page/Waiter'
+
+import { WaiterTable } from '@/components/WaiterTable'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin/staff/waiter')({
@@ -7,6 +8,6 @@ export const Route = createFileRoute('/admin/staff/waiter')({
 
 function RouteComponent() {
   return <div>
-    <Waiter />
+    <WaiterTable />
   </div>
 }

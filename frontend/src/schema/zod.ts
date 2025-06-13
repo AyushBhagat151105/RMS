@@ -80,3 +80,10 @@ export const waiterSchemaForm = z.object({
   email: z.string().email('Invalid email'),
   password: z.string().min(1, 'Password is required'),
 })
+
+export const kitchenSchemaForm = z.object({
+  restaurantId: z.string().min(1, 'Restaurant ID is required'),
+  fullName: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email'),
+  password: z.string().min(1, 'Password is required'),
+})

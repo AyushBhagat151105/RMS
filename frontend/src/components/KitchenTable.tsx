@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { WaiterForm } from "./WaiterForm";
-import { deleteWaiter, getAllWaiters } from "@/hooks/query";
+import { deleteKitchen, getAllKitchens } from "@/hooks/query";
 import { useRestaurantStore } from "@/store/restaurant";
+import { KitchenForm } from "./KitchenForm";
 
-export function WaiterTable() {
-    interface Waiter {
+export function KitchenTable() {
+    interface Kitchen {
         id: string;
         fullName: string;
         email: string;
@@ -22,25 +22,24 @@ export function WaiterTable() {
     const { selectedRestaurantId } = useRestaurantStore()
     const queryClient = useQueryClient();
     const { data, isLoading } = useQuery({
-        queryKey: ["waiters", selectedRestaurantId?.id],
-        queryFn: () => getAllWaiters(selectedRestaurantId?.id as string),
+        queryKey: ["kitchen", selectedRestaurantId?.id],
+        queryFn: () => getAllKitchens(selectedRestaurantId?.id as string),
     });
 
-    const waiters: Waiter[] = Array.isArray(data?.data) ? data.data : [];
+    const kitchen: Kitchen[] = Array.isArray(data?.data) ? data.data : [];
 
     const deleteMutation = useMutation({
-        mutationFn: deleteWaiter,
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["waiters", selectedRestaurantId?.id as string] }),
+        mutationFn: deleteKitchen,
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["kitchen", selectedRestaurantId?.id as string] }),
     });
 
     if (isLoading) return <div>Loading...</div>;
     if (!selectedRestaurantId) return <div>Please select a restaurant</div>;
 
-
     return (
         <div className="p-4 w-screen md:w-[1120px]">
             <div className="flex justify-end">
-                <WaiterForm trigger={<Button>Add Waiter</Button>} />
+                <KitchenForm trigger={<Button>Add Kitchen</Button>} />
             </div>
             <Table>
                 <TableHeader>
@@ -51,20 +50,20 @@ export function WaiterTable() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {waiters.map((waiter: Waiter) => (
-                        <TableRow key={waiter.id}>
-                            <TableCell>{waiter.fullName}</TableCell>
-                            <TableCell>{waiter.email}</TableCell>
+                    {kitchen.map((kitchen: Kitchen) => (
+                        <TableRow key={kitchen.id}>
+                            <TableCell>{kitchen.fullName}</TableCell>
+                            <TableCell>{kitchen.email}</TableCell>
 
                             <TableCell className="flex justify-end gap-2">
-                                <WaiterForm
-                                    initialData={waiter}
+                                <KitchenForm
+                                    initialData={kitchen}
                                     trigger={<Button variant="secondary" size="sm">Edit</Button>}
                                 />
                                 <Button
                                     variant="destructive"
                                     size="sm"
-                                    onClick={() => deleteMutation.mutate(waiter.id)}
+                                    onClick={() => deleteMutation.mutate(kitchen.id)}
                                 >
                                     Delete
                                 </Button>
