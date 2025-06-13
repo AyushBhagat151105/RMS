@@ -22,11 +22,11 @@ export default function Order() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ["orders", selectedRestaurantId],
+        queryKey: ["orders", selectedRestaurantId?.id],
         queryFn: () => getOrders(selectedRestaurantId?.id as string),
         refetchInterval: 10000,
         refetchOnWindowFocus: true,
-        enabled: !!selectedRestaurantId,
+        enabled: !!selectedRestaurantId?.id,
     })
 
     const orders = data?.data || []

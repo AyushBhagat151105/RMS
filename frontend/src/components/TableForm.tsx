@@ -14,12 +14,8 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createTable, updateTable } from "@/hooks/query";
 import { useRestaurantStore } from "@/store/restaurant";
+import { tableInputSchema } from "@/schema/zod";
 
-// Zod schema
-const tableInputSchema = z.object({
-    number: z.coerce.number().min(1, "Table number is required"),
-    capacity: z.coerce.number().min(1, "Capacity is required"),
-});
 
 type TableSchema = z.infer<typeof tableInputSchema>;
 

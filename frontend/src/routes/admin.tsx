@@ -17,9 +17,16 @@ function RouteComponent() {
   return (
     <SidebarProvider>
       <AdminSidebar />
-      <main className='flex w-screen h-screen'>
-        <SidebarTrigger />
-        <Outlet />
+      <main className="flex flex-col md:flex-row w-full h-screen overflow-hidden">
+
+        <div>
+          <SidebarTrigger />
+        </div>
+
+
+        <div className="flex-1 overflow-auto">
+          <Outlet />
+        </div>
       </main>
     </SidebarProvider>
   )

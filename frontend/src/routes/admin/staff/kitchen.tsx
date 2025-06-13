@@ -1,3 +1,4 @@
+import { KitchenTable } from '@/components/KitchenTable'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin/staff/kitchen')({
@@ -5,5 +6,7 @@ export const Route = createFileRoute('/admin/staff/kitchen')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/admin/staff/kitchen"!</div>
+  return <div>
+    <KitchenTable />
+  </div>
 }
