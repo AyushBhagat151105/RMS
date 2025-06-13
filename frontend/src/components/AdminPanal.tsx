@@ -4,6 +4,7 @@ import { Card } from './ui/card'
 import Order from '@/page/Order'
 import { useEffect } from 'react'
 import { useRestaurantStore } from '@/store/restaurant'
+import CountCard from './CountCard'
 
 const dummyData = [
     { name: 'Jan', users: 40 },
@@ -28,18 +29,8 @@ function AdminPanal() {
             </div>
 
             {/* Stats Section */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {['Users', 'Posts', 'Messages'].map((label, i) => (
-                    <Card
-                        key={i}
-                        className="bg-white dark:bg-gray-900 shadow border border-gray-200 dark:border-gray-700 p-4"
-                    >
-                        <div className="text-sm sm:text-base text-gray-500 dark:text-gray-400">{label}</div>
-                        <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                            {Math.floor(Math.random() * 1000)}
-                        </div>
-                    </Card>
-                ))}
+            <div>
+                <CountCard />
             </div>
 
             {/* Chart Section */}
