@@ -114,6 +114,7 @@ export const loginWaiter = asyncHandler(async (req: Request, res: Response) => {
       fullName: true,
       avatar: true,
       role: true,
+      restaurantId: true,
     },
   });
 
@@ -159,6 +160,7 @@ export const loginKitchen = asyncHandler(
         fullName: true,
         avatar: true,
         role: true,
+        restaurantId: true,
       },
     });
 
@@ -347,6 +349,8 @@ export const getAllWaiters = asyncHandler(
     if (!waiters) {
       throw new ApiError(400, "No waiter at");
     }
+
+    
 
     return res
       .status(200)

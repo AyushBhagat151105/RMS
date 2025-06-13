@@ -78,3 +78,51 @@ export const deleteTable = async (id: string) => {
 
   return res.data
 }
+
+export const createWaiter = async (data: FormData) => {
+  const res = await axiosInstance.post(`/staff/create-waiter`, data)
+
+  return res.data
+}
+
+export const createkitchen = async (data: FormData) => {
+  const res = await axiosInstance.post(`/staff/create-kitchen`, data)
+
+  return res.data
+}
+
+export const updateWaiter = async (data: FormData, id: string) => {
+  const res = await axiosInstance.put(`/staff/update-waiter/${id}`, data)
+
+  return res.data
+}
+
+export const updateKitchen = async (data: FormData, id: string) => {
+  const res = await axiosInstance.put(`/staff/update-kitchen/${id}`, data)
+
+  return res.data
+}
+
+export const deleteWaiter = async (id: string) => {
+  const res = await axiosInstance.delete(`/staff/delete-waiter/${id}`)
+
+  return res.data
+}
+
+export const deleteKitchen = async (id: string) => {
+  const res = await axiosInstance.delete(`/staff/delete-kitchen/${id}`)
+
+  return res.data
+}
+
+export const getAllWaiters = async (restaurantId: string) => {
+  const res = await axiosInstance.get(`/staff/get-all-waiters/${restaurantId}`)
+
+  return res.data
+}
+
+export const getAllKitchens = async (restaurantId: string) => {
+  const res = await axiosInstance.get(`/staff/get-all-kitchen/${restaurantId}`)
+
+  return res.data
+}

@@ -55,16 +55,28 @@ export const menuInputSchema = z.object({
   price: z.string().min(1, 'Price is required'),
   tags: z.string().min(1, 'Tags is required'),
   imageUrl: z
-      .custom<File>((file) => file instanceof File, {
-          message: 'Image is required',
-      })
-      .refine((file) => file.size <= 5 * 1024 * 1024, {
-          message: 'Image must be less than 5MB',
-      })
-      .refine(
-          (file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
-          {
-              message: 'Only JPG, PNG, or WEBP formats are allowed',
-          },
-      ),
+    .custom<File>((file) => file instanceof File, {
+      message: 'Image is required',
+    })
+    .refine((file) => file.size <= 5 * 1024 * 1024, {
+      message: 'Image must be less than 5MB',
+    })
+    .refine(
+      (file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
+      {
+        message: 'Only JPG, PNG, or WEBP formats are allowed',
+      },
+    ),
+})
+
+export const tableInputSchema = z.object({
+  number: z.coerce.number().min(1, 'Table number is required'),
+  capacity: z.coerce.number().min(1, 'Capacity is required'),
+})
+
+export const waiterSchemaForm = z.object({
+  restaurantId: z.string().min(1, 'Restaurant ID is required'),
+  fullName: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email'),
+  password: z.string().min(1, 'Password is required'),
 })

@@ -1,3 +1,4 @@
+import Waiter from '@/page/Waiter'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin/staff/waiter')({
@@ -5,5 +6,7 @@ export const Route = createFileRoute('/admin/staff/waiter')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/admin/staff/waiter"!</div>
+  return <div>
+    <Waiter />
+  </div>
 }

@@ -72,7 +72,7 @@ function AdminSidebar() {
         },
         {
             title: "Order",
-            url: `/admin/${selectedRestaurantId}/order`,
+            url: `/admin/${selectedRestaurantId?.id}/order`,
             icon: ListOrdered,
         },
     ]
