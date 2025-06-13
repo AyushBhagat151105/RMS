@@ -50,9 +50,10 @@ export default function Order() {
         }
 
         if (hasNewOrder && previousOrderIds.size > 0) {
-            queryClient.invalidateQueries({ queryKey: ["waiter-count", selectedRestaurantId?.id] });
-            queryClient.invalidateQueries({ queryKey: ["kitchen-count", selectedRestaurantId?.id] });
-            queryClient.invalidateQueries({ queryKey: ["order-count", selectedRestaurantId?.id] });
+            queryClient.invalidateQueries({ queryKey: ["waiter-count", selectedRestaurantId?.id as string] });
+            queryClient.invalidateQueries({ queryKey: ["kitchen-count", selectedRestaurantId?.id as string] });
+            queryClient.invalidateQueries({ queryKey: ["order-count", selectedRestaurantId?.id as string] });
+            queryClient.invalidateQueries({ queryKey: ["order-count-by-status", selectedRestaurantId?.id as string] })
             toast.success("🔔 New order received!")
             audioRef.current?.play().catch((err) => {
                 console.error("Audio playback failed:", err)

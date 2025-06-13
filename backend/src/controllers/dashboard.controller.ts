@@ -33,6 +33,9 @@ export const getTotalOrdersByStatus = asyncHandler(
         restaurantId: restaurantId,
       },
       by: ["status"],
+      _count: {
+        status: true,
+      },
     });
 
     if (!order) throw new ApiError(404, "No orders found");
