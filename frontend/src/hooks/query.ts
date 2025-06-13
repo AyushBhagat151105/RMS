@@ -126,3 +126,31 @@ export const getAllKitchens = async (restaurantId: string) => {
 
   return res.data
 }
+
+export const getCountOrders = async (resaturantId: string) => {
+  const res = await axiosInstance.get(`/dashboard/total-orders/${resaturantId}`)
+
+  return res.data
+}
+
+export const getCountOrdersByStatus = async (resaturantId: string) => {
+  const res = await axiosInstance.get(
+    `/dashboard/total-orders-by-status/${resaturantId}`,
+  )
+
+  return res.data
+}
+
+export const getCountWaiter = async (resaturantId: string) => {
+  const res = await axiosInstance.get(`/dashboard/total-waiter/${resaturantId}`)
+
+  return res.data
+}
+
+export const getCountKitchen = async (resaturantId: string) => {
+  const res = await axiosInstance.get(
+    `/dashboard/total-kitchen/${resaturantId}`,
+  )
+
+  return res.data
+}

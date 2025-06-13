@@ -1,17 +1,12 @@
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import GreetingCard from "./GreetingCard"
 import { Card } from './ui/card'
 import Order from '@/page/Order'
 import { useEffect } from 'react'
 import { useRestaurantStore } from '@/store/restaurant'
+import CountCard from './CountCard'
+import ChartPie from './ChartPie'
 
-const dummyData = [
-    { name: 'Jan', users: 40 },
-    { name: 'Feb', users: 30 },
-    { name: 'Mar', users: 20 },
-    { name: 'Apr', users: 27 },
-    { name: 'May', users: 50 },
-]
+
 
 function AdminPanal() {
     const { getRestaurants } = useRestaurantStore()
@@ -28,36 +23,12 @@ function AdminPanal() {
             </div>
 
             {/* Stats Section */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {['Users', 'Posts', 'Messages'].map((label, i) => (
-                    <Card
-                        key={i}
-                        className="bg-white dark:bg-gray-900 shadow border border-gray-200 dark:border-gray-700 p-4"
-                    >
-                        <div className="text-sm sm:text-base text-gray-500 dark:text-gray-400">{label}</div>
-                        <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                            {Math.floor(Math.random() * 1000)}
-                        </div>
-                    </Card>
-                ))}
+            <div>
+                <CountCard />
             </div>
 
             {/* Chart Section */}
-            <Card className="p-4 shadow border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    User Growth (Past 5 Months)
-                </h3>
-                <div className="w-full h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={dummyData}>
-                            <XAxis dataKey="name" stroke="#8884d8" />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="users" fill="#4f46e5" />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-            </Card>
+            <ChartPie />
 
             {/* Recent Activity */}
             <Card className="p-4 shadow border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-x-auto">

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"
 import { getOrders } from "@/hooks/query"
 import { useRestaurantStore } from "@/store/restaurant"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "sonner"
 
@@ -17,6 +17,8 @@ export default function Order() {
     const { selectedRestaurantId } = useRestaurantStore()
     const audioRef = useRef<HTMLAudioElement | null>(null)
     const prevOrderIdsRef = useRef<Set<string>>(new Set())
+
+    const queryClient = useQueryClient()
 
     const [selectedOrder, setSelectedOrder] = useState<any>(null)
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -48,6 +50,10 @@ export default function Order() {
         }
 
         if (hasNewOrder && previousOrderIds.size > 0) {
+            queryClient.invalidateQueries({ queryKey: ["waiter-count", selectedRestaurantId?.id as string] });
+            queryClient.invalidateQueries({ queryKey: ["kitchen-count", selectedRestaurantId?.id as string] });
+            queryClient.invalidateQueries({ queryKey: ["order-count", selectedRestaurantId?.id as string] });
+            queryClient.invalidateQueries({ queryKey: ["order-count-by-status", selectedRestaurantId?.id as string] })
             toast.success("🔔 New order received!")
             audioRef.current?.play().catch((err) => {
                 console.error("Audio playback failed:", err)
