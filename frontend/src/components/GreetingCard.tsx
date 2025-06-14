@@ -9,7 +9,7 @@ function GreetingCard() {
     const { authUser } = useAuthStore()
 
     return (
-        <Card className="w-screen max-w-4xl mx-auto shadow-lg border-0 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+        <Card className="w-screen max-w-4xl mx-auto shadow-lg ">
             <CardContent className="p-6 md:p-8">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
                     <div className="relative flex-shrink-0">

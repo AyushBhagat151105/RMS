@@ -71,7 +71,7 @@ function CountCard() {
                         {card.loading ? (
                             <Loader2 className="animate-spin text-gray-400 w-6 h-6" />
                         ) : (
-                            <div className="text-3xl font-bold text-gray-900">{card.count}</div>
+                            <div className="text-3xl font-bold">{card.count}</div>
                         )}
                     </CardContent>
                 </Card>
