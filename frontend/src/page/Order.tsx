@@ -103,8 +103,9 @@ export default function Order() {
                             Export CSV
                         </Button>
                         <Button
+                            variant={"outline"}
                             onClick={() => exportToExcel(exportableData)}
-                            className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
+                            className="px-4 py-1 rounded"
                         >
                             Export Excel
                         </Button>
