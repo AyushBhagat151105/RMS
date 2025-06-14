@@ -118,7 +118,7 @@ model Notification {
 }
 
 model Orders {
-  id           String       @id @default(uuid())
+  id           Int          @id @default(autoincrement())
   userId       String
   tableId      String
   status       OrderStatus  @default(PENDING)
@@ -150,7 +150,7 @@ model tables {
 
 model Order_Item {
   id         String   @id @default(uuid())
-  orderId    String
+  orderId    Int
   menuItemId String
   quantity   Int      @default(1)
   price      Float
@@ -164,7 +164,7 @@ model Order_Item {
 
 model payment {
   id        String   @id @default(uuid())
-  orderId   String
+  orderId   Int
   amount    Float
   method    method   @default(CASH)
   status    status   @default(PENDING)
