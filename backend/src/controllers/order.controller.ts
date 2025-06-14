@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
+
 import { Request, Response } from "express";
 
 export const createOrder = asyncHandler(async (req: Request, res: Response) => {
@@ -56,7 +57,7 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
 
   const order = await db.orders.create({
     data: {
-      userId,
+      waiterId: userId,
       tableId,
       restaurantId,
       total,
@@ -91,7 +92,7 @@ export const getOrderById = asyncHandler(
     const order = await db.orders.findUnique({
       where: { id: Number(id) },
       include: {
-        user: {
+        waiter: {
           select: {
             id: true,
             fullName: true,
@@ -145,7 +146,7 @@ export const getAllOrders = asyncHandler(
     const orders = await db.orders.findMany({
       where: { restaurantId: id },
       include: {
-        user: {
+        waiter: {
           select: {
             id: true,
             fullName: true,

@@ -50,7 +50,6 @@ model User {
   createdAt               DateTime       @default(now())
   updatedAt               DateTime       @updatedAt
   Notification            Notification[]
-  Orders                  Orders[]
   restaurants             restaurants[]
 }
 
@@ -66,6 +65,7 @@ model Waiter {
   restaurant   restaurants @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
+  Orders       Orders[]
 
   @@index([restaurantId])
 }
@@ -119,14 +119,14 @@ model Notification {
 
 model Orders {
   id           Int          @id @default(autoincrement())
-  userId       String
+  waiterId     String?
   tableId      String
   status       OrderStatus  @default(PENDING)
   total        Float        @default(0.0)
   restaurantId String
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  waiter       Waiter?      @relation(fields: [waiterId], references: [id], onDelete: Cascade)
   table        tables       @relation(fields: [tableId], references: [id], onDelete: Cascade)
   Order_Item   Order_Item[]
   payment      payment[]

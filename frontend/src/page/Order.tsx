@@ -86,7 +86,7 @@ export default function Order() {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Order ID</TableHead>
-                                <TableHead>Customer</TableHead>
+                                <TableHead>Waiter Name</TableHead>
                                 <TableHead>Table</TableHead>
                                 <TableHead>Status</TableHead>
                                 <TableHead>Total (₹)</TableHead>
@@ -105,7 +105,7 @@ export default function Order() {
                                     className="cursor-pointer hover:bg-muted transition"
                                 >
                                     <TableCell className="font-mono text-xs">{order.id}</TableCell>
-                                    <TableCell>{order.user.fullName}</TableCell>
+                                    <TableCell>{order.waiter.fullName}</TableCell>
                                     <TableCell>#{order.table.number}</TableCell>
                                     <TableCell>
                                         <span

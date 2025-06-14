@@ -188,7 +188,7 @@ exports.Prisma.NotificationScalarFieldEnum = {
 
 exports.Prisma.OrdersScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
+  waiterId: 'waiterId',
   tableId: 'tableId',
   status: 'status',
   total: 'total',

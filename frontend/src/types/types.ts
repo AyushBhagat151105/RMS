@@ -1,6 +1,6 @@
 export type Order = {
   id: string
-  user: {
+  waiter: {
     fullName: string
     email: string
   }
@@ -30,10 +30,10 @@ export type Menu = {
 }
 
 export type Restaurant = {
-  id: string;
-  name: string;
-  description: string;
-  address: string;
-  phone: string;
-  email: string;
-};
+  id: string
+  name: string
+  description: string
+  address: string
+  phone: string
+  email: string
+}

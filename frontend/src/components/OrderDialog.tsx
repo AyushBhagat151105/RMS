@@ -30,7 +30,7 @@ export default function OrderDialog({
 
                 {/* Customer & Table Info */}
                 <div className="space-y-2 border-b pb-4">
-                    <p><span className="font-medium">Customer:</span> {order.user.fullName}</p>
+                    <p><span className="font-medium">Customer:</span> {order.waiter.fullName}</p>
                     <p><span className="font-medium">Table:</span> #{order.table.number}</p>
                     <div className="flex items-center gap-2">
                         <span className="font-medium">Status:</span>
