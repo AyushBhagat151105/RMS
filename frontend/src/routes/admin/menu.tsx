@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/store'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
+
 export const Route = createFileRoute('/admin/menu')({
   beforeLoad: ({ navigate }) => {
     const authUser = useAuthStore.getState().authUser
@@ -20,9 +21,9 @@ function RouteComponent() {
   const { selectedRestaurantId } = useRestaurantStore()
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['get-all-menus'],
+    queryKey: ['get-all-menus', selectedRestaurantId?.id as string],
     queryFn: () => getMenus(selectedRestaurantId?.id as string),
-    enabled: !!selectedRestaurantId,
+    enabled: !!selectedRestaurantId?.id,
   })
 
   if (!selectedRestaurantId) {
@@ -60,7 +61,7 @@ function RouteComponent() {
           <MenuFormDialog />
         </div>
       </div>
-  
+
       {/* Menu Grid */}
       {data?.data?.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
@@ -75,5 +76,5 @@ function RouteComponent() {
       )}
     </div>
   )
-  
+
 }
