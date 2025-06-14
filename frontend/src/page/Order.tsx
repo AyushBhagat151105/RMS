@@ -12,6 +12,8 @@ import { useRestaurantStore } from "@/store/restaurant"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "sonner"
+import { exportToCSV, exportToExcel } from "@/lib/exportUtils"
+import { Button } from "@/components/ui/button"
 
 export default function Order() {
     const { selectedRestaurantId } = useRestaurantStore()
@@ -69,6 +71,17 @@ export default function Order() {
         )
     }, [orders])
 
+    const exportableData = sortedOrders.map((order: any) => ({
+        id: order.id,
+        waiter: order.waiter.fullName,
+        table: order.table.number,
+        status: order.status,
+        total: order.total,
+        createdAt: new Date(order.createdAt).toLocaleString(),
+        items: order.Order_Item.map((item: any) => `${item.menuItem.name} x ${item.quantity}`).join(", ")
+    }));
+
+
     return (
         <div className="p-4 w-screen md:w-[1120px]">
             <h1 className="text-xl font-semibold mb-4">Orders</h1>
@@ -82,6 +95,20 @@ export default function Order() {
                 <p>Error loading orders</p>
             ) : (
                 <>
+                    <div className="flex justify-end mb-2 gap-2">
+                        <Button
+                            onClick={() => exportToCSV(exportableData)}
+                            className=" text-white px-4 py-1 rounded "
+                        >
+                            Export CSV
+                        </Button>
+                        <Button
+                            onClick={() => exportToExcel(exportableData)}
+                            className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
+                        >
+                            Export Excel
+                        </Button>
+                    </div>
                     <Table>
                         <TableHeader>
                             <TableRow>
