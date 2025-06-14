@@ -35,7 +35,13 @@ export function RestaurantFormDialog({
 }) {
     const form = useForm<RestaurantSchema>({
         resolver: zodResolver(restaurantSchema),
-        defaultValues: defaultValues || { name: "", location: "" },
+        defaultValues: defaultValues || {
+            name: "",
+            description: "",
+            address: "",
+            phone: "",
+            email: "",
+        },
     });
 
     const queryClient = useQueryClient();
@@ -54,7 +60,10 @@ export function RestaurantFormDialog({
     const onSubmit = (values: RestaurantSchema) => {
         const formData = new FormData();
         formData.append("name", values.name);
-        formData.append("location", values.location);
+        formData.append("description", values.description);
+        formData.append("address", values.address);
+        formData.append("phone", values.phone);
+        formData.append("email", values.email);
 
         if (editId) {
             updateMutation.mutate({ data: formData, id: editId });
@@ -91,11 +100,44 @@ export function RestaurantFormDialog({
                         />
                         <FormField
                             control={form.control}
-                            name="location"
+                            name="description"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Location</FormLabel>
-                                    <FormControl><Input placeholder="Location" {...field} /></FormControl>
+                                    <FormLabel>Description</FormLabel>
+                                    <FormControl><Input placeholder="Short Description" {...field} /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="address"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Address</FormLabel>
+                                    <FormControl><Input placeholder="Restaurant Address" {...field} /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Phone</FormLabel>
+                                    <FormControl><Input placeholder="Phone number" {...field} /></FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl><Input placeholder="Email" type="email" {...field} /></FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
