@@ -20,6 +20,7 @@ import {
     PanelBottom,
     Table,
     Users,
+    UtensilsCrossed,
 } from "lucide-react"
 import {
     DropdownMenu,
@@ -74,6 +75,11 @@ function AdminSidebar() {
             title: "Order",
             url: `/admin/${selectedRestaurantId?.id}/order`,
             icon: ListOrdered,
+        },
+        {
+            title: "Restaurant",
+            url: "/admin/restaurant",
+            icon: UtensilsCrossed,
         },
     ]
 

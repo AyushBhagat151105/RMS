@@ -31,7 +31,7 @@ function AdminPanal() {
             <ChartPie />
 
             {/* Recent Activity */}
-            <Card className="p-4 shadow border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-x-auto">
+            <Card className="p-4 shadow overflow-x-auto">
                 <Order />
             </Card>
         </div>

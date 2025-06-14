@@ -154,3 +154,30 @@ export const getCountKitchen = async (resaturantId: string) => {
 
   return res.data
 }
+
+export const getTotalRestaurant = async () => {
+  const res = await axiosInstance.get('/restaurant/get-restaurants')
+
+  return res.data
+}
+
+export const createRestaurant = async (data: FormData) => {
+  const res = await axiosInstance.post('/restaurant/create-restaurant', data)
+
+  return res.data
+}
+
+export const updateRestaurant = async (data: FormData, id: string) => {
+  const res = await axiosInstance.put(
+    `/restaurant/update-restaurant/${id}`,
+    data,
+  )
+
+  return res.data
+}
+
+export const deleteRestaurant = async (id: string) => {
+  const res = await axiosInstance.delete(`/restaurant/delete-restaurant/${id}`)
+
+  return res.data
+}

@@ -28,3 +28,12 @@ export type Menu = {
   tags: string
   imageUrl: File
 }
+
+export type Restaurant = {
+  id: string;
+  name: string;
+  description: string;
+  address: string;
+  phone: string;
+  email: string;
+};

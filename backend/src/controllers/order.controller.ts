@@ -89,7 +89,7 @@ export const getOrderById = asyncHandler(
     }
 
     const order = await db.orders.findUnique({
-      where: { id },
+      where: { id: Number(id) },
       include: {
         user: {
           select: {
@@ -196,7 +196,7 @@ export const updateOrder = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status, items } = req.body;
 
-  const order = await db.orders.findUnique({ where: { id } });
+  const order = await db.orders.findUnique({ where: { id: Number(id) } });
 
   if (!order) {
     throw new ApiError(404, "Order not found");
@@ -237,11 +237,11 @@ export const updateOrder = asyncHandler(async (req: Request, res: Response) => {
     }
 
     await db.order_Item.deleteMany({
-      where: { orderId: id },
+      where: { orderId: order.id },
     });
 
     const newItems = items.map((item) => ({
-      orderId: id,
+      orderId: order.id,
       menuItemId: item.menuId,
       quantity: item.quantity,
       price: item.price,
@@ -251,7 +251,7 @@ export const updateOrder = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const updatedOrder = await db.orders.update({
-    where: { id },
+    where: { id: Number(id) },
     data: {
       status,
       total: updatedTotal,
@@ -266,7 +266,7 @@ export const updateOrder = asyncHandler(async (req: Request, res: Response) => {
 export const cancelOrder = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const order = await db.orders.findUnique({ where: { id } });
+  const order = await db.orders.findUnique({ where: { id: Number(id) } });
 
   if (!order) {
     throw new ApiError(404, "Order not found");
@@ -277,7 +277,7 @@ export const cancelOrder = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const cancelledOrder = await db.orders.update({
-    where: { id },
+    where: { id: Number(id) },
     data: {
       status: "CANCELLED",
     },
@@ -297,7 +297,7 @@ export const getOrderStatus = asyncHandler(
     }
 
     const status = await db.orders.findUnique({
-      where: { id },
+      where: { id: Number(id) },
       select: {
         status: true,
       },
