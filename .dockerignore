@@ -1,0 +1,24 @@
+# Dependencies
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+
+
+# Version control
+**/.git
+**/.gitignore
+
+# IDE
+**/.vscode
+**/.idea
+
+# Logs
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+
+# Build outputs
+**/build
+**/.cache

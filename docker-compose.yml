@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ayush
+      POSTGRES_PASSWORD: 151105
+      POSTGRES_DB: rms_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    restart: always
+    env_file:
+      - .env.docker
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    restart: always
+    env_file:
+      - .env.docker
+    ports:
+      - "3000:80"
+
+volumes:
+  pgdata:
