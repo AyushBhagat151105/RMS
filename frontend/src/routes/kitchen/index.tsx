@@ -1,3 +1,4 @@
+import GreetingCard from '@/components/GreetingCard'
 import { useAuthStore } from '@/store/store'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -13,5 +14,17 @@ export const Route = createFileRoute('/kitchen/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/kitchen/"!</div>
+
+  const { authUser } = useAuthStore()
+  console.log(authUser);
+
+
+  return (
+    <div className='flex justify-center items-center p-3'>
+      <div>
+        <GreetingCard />
+
+      </div>
+    </div>
+  )
 }

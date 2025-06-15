@@ -10,6 +10,7 @@ export interface User {
   avatar?: string
   role?: string
   isVerified?: boolean
+  restaurantId?: string
 }
 
 export interface SignUpResponse {

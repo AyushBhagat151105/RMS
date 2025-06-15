@@ -52,7 +52,7 @@ export default function TableList() {
     const tables = data?.data ?? [];
 
     return (
-        <div className="pt-3 w-full max-w-[1120px]">
+        <div className="w-full">
             <div className="flex justify-between items-center px-2">
                 <h2 className="text-xl font-semibold">Manage Tables</h2>
                 <Dialog>

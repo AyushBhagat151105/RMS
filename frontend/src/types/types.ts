@@ -37,3 +37,17 @@ export type Restaurant = {
   phone: string
   email: string
 }
+
+export type MenuItem = {
+  id: string
+  name: string
+  description: string
+  price: number
+  imageUrl: string
+  available: boolean
+  restaurantId: string
+  categoryId: string | null
+  tags: string[]
+  createdAt: string
+  updatedAt: string
+}

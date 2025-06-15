@@ -1,27 +1,39 @@
 import AdminSidebar from '@/components/AdminSidebar'
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import withRestaurantSelectionCheck from '@/hooks/withRestaurantSelectionCheck';
+import { SiteHeader } from '@/components/site-header'
+import {
+  SidebarProvider,
+  SidebarInset,
+} from '@/components/ui/sidebar'
+import withRestaurantSelectionCheck from '@/hooks/withRestaurantSelectionCheck'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-
 
 function RouteComponentBase() {
   return (
-    <SidebarProvider>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
       <AdminSidebar />
-      <main className="flex flex-col md:flex-row w-full h-screen overflow-hidden">
-        <div>
-          <SidebarTrigger />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6 overflow-auto">
+              <Outlet />
+            </div>
+          </div>
         </div>
-        <div className="flex-1 overflow-auto">
-          <Outlet />
-        </div>
-      </main>
+      </SidebarInset>
     </SidebarProvider>
-  );
+  )
 }
 
-const RouteComponent = withRestaurantSelectionCheck(RouteComponentBase);
+const RouteComponent = withRestaurantSelectionCheck(RouteComponentBase)
 
 export const Route = createFileRoute('/admin')({
   component: RouteComponent,
-});
+})

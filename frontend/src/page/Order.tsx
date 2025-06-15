@@ -83,7 +83,7 @@ export default function Order() {
 
 
     return (
-        <div className="p-4 w-screen md:w-[1120px]">
+        <div className="w-full">
             <h1 className="text-xl font-semibold mb-4">Orders</h1>
             <audio ref={audioRef} src="/notification.mp3" preload="auto" />
 

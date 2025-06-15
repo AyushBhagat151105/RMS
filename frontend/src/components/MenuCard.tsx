@@ -22,20 +22,9 @@ import { toast } from "sonner";
 import { chengeMenuAvailability, deleteMenus } from "@/hooks/query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Switch } from "./ui/switch";
+import type { MenuItem } from "@/types/types";
 
-type MenuItem = {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    imageUrl: string;
-    available: boolean;
-    restaurantId: string;
-    categoryId: string | null;
-    tags: string[];
-    createdAt: string;
-    updatedAt: string;
-};
+
 
 type Props = {
     data: MenuItem;
@@ -68,9 +57,6 @@ export default function MenuCard({ data }: Props) {
         },
     });
 
-    if (isToggling) return <div>Loading...</div>
-
-
     const handleDelete = () => {
         const confirm = window.confirm(`Are you sure you want to delete "${data.name}"?`);
         if (confirm) deleteItem();
@@ -78,19 +64,21 @@ export default function MenuCard({ data }: Props) {
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-            <Card className="w-full max-w-sm mx-auto rounded-xl shadow-sm transition-all hover:shadow-md hover:scale-[1.01] bg-background">
+            <Card className="w-full max-w-sm mx-auto rounded-2xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-transform duration-150 bg-background">
                 <CardHeader className="relative p-0">
-                    <div className="aspect-[4/3] w-full overflow-hidden rounded-t-xl">
+                    <div className="aspect-[4/3] w-full overflow-hidden rounded-t-2xl">
                         <img
                             src={data.imageUrl}
                             alt={data.name}
+                            loading="lazy"
                             className="w-full h-full object-cover"
                         />
                     </div>
+
                     {/* Edit Button */}
                     <DialogTrigger asChild>
                         <button
-                            className="absolute top-2 right-10 bg-white p-1 rounded-full shadow hover:bg-gray-100"
+                            className="absolute top-2 right-10 bg-white p-1.5 rounded-full shadow-sm hover:bg-gray-100 transition-colors"
                             onClick={() => setDialogOpen(true)}
                         >
                             <Pencil className="w-4 h-4 text-gray-600" />
@@ -99,7 +87,7 @@ export default function MenuCard({ data }: Props) {
 
                     {/* Delete Button */}
                     <button
-                        className="absolute top-2 right-2 bg-white p-1 rounded-full shadow hover:bg-red-100"
+                        className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow-sm hover:bg-red-100 transition-colors"
                         onClick={handleDelete}
                         disabled={isDeleting}
                     >
@@ -107,13 +95,16 @@ export default function MenuCard({ data }: Props) {
                     </button>
                 </CardHeader>
 
-                <CardContent className="p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                        <CardTitle className="text-base font-semibold">{data.name}</CardTitle>
+                <CardContent className="p-4 space-y-4">
+                    <div className="flex items-center justify-between gap-2">
+                        <CardTitle className="text-base font-semibold line-clamp-1">
+                            {data.name}
+                        </CardTitle>
+
                         <div className="flex items-center gap-2">
                             <Badge
                                 variant={data.available ? "default" : "outline"}
-                                className="text-xs flex items-center gap-1"
+                                className="text-xs flex items-center gap-1 px-2 py-0.5"
                             >
                                 <CheckCircle2 className="h-4 w-4" />
                                 {data.available ? "Available" : "Unavailable"}
@@ -131,7 +122,7 @@ export default function MenuCard({ data }: Props) {
                         {data.description || "No description available."}
                     </CardDescription>
 
-                    <div className="text-base font-bold text-primary">
+                    <div className="text-lg font-bold text-primary">
                         ₹{data.price.toFixed(2)}
                     </div>
 
