@@ -3,6 +3,7 @@ import { generateQRCodeAndUpload } from "@/services/qrCodegenrator";
 import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
+import { deleteFromCloudinary } from "@/utils/cloudinary";
 import { Request, Response } from "express";
 
 export const createTable = asyncHandler(async (req: Request, res: Response) => {
@@ -35,7 +36,8 @@ export const createTable = asyncHandler(async (req: Request, res: Response) => {
   const updatedTable = await db.tables.update({
     where: { id: table.id },
     data: {
-      qrCodeUrl: qrCodeUrl || null,
+      qrCodeUrl: qrCodeUrl?.secure_url || null,
+      cloudinaryPublicId: qrCodeUrl?.public_id || null,
     },
   });
 
@@ -69,25 +71,27 @@ export const getAllTables = asyncHandler(
 );
 
 export const deleteTable = asyncHandler(async (req: Request, res: Response) => {
-  const { id, role } = req.user ? req.user : { id: null, role: null };
+  const { id, role } = req.user ?? { id: null, role: null };
 
   if (!id || role !== "ADMIN") {
     throw new ApiError(403, "Forbidden: You do not have permission");
   }
 
   const { tableId } = req.params;
-
   if (!tableId) {
     throw new ApiError(400, "Bad Request: Missing table ID");
   }
 
-  const table = await db.tables.delete({
-    where: { id: tableId },
-  });
-
+  const table = await db.tables.findUnique({ where: { id: tableId } });
   if (!table) {
     throw new ApiError(404, "Not Found: Table not found");
   }
+
+  if (table.cloudinaryPublicId) {
+    await deleteFromCloudinary(table.cloudinaryPublicId);
+  }
+
+  await db.tables.delete({ where: { id: tableId } });
 
   return res
     .status(200)

@@ -23,6 +23,8 @@ import { chengeMenuAvailability, deleteMenus } from "@/hooks/query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Switch } from "./ui/switch";
 import type { MenuItem } from "@/types/types";
+import { useRestaurantStore } from "@/store/restaurant";
+import { useAuthStore } from "@/store/store";
 
 
 
@@ -33,13 +35,18 @@ type Props = {
 
 export default function MenuCard({ data }: Props) {
     const [isDialogOpen, setDialogOpen] = useState(false);
+    const { selectedRestaurantId } = useRestaurantStore()
+    const { authUser } = useAuthStore()
     const queryClient = useQueryClient();
+
+    const restaurantId = selectedRestaurantId?.id || authUser?.restaurantId
 
     const { mutate: deleteItem, isPending: isDeleting } = useMutation({
         mutationFn: () => deleteMenus(data.id),
         onSuccess: () => {
             toast.success("Menu item deleted successfully.");
-            queryClient.invalidateQueries({ queryKey: ["get-all-menus"] });
+            queryClient.invalidateQueries({ queryKey: ["get-all-menus", restaurantId as string] });
+            queryClient.refetchQueries({ queryKey: ["get-all-menus", restaurantId as string] });
         },
         onError: () => {
             toast.error("Failed to delete menu item.");
@@ -50,7 +57,9 @@ export default function MenuCard({ data }: Props) {
         mutationFn: () => chengeMenuAvailability(data.id),
         onSuccess: () => {
             toast.success(`Menu is now ${data.available ? "unavailable" : "available"}.`);
-            queryClient.invalidateQueries({ queryKey: ["get-all-menus"] });
+            queryClient.invalidateQueries({ queryKey: ["get-all-menus", restaurantId as string] });
+            queryClient.refetchQueries({ queryKey: ["get-all-menus", restaurantId as string] });
+
         },
         onError: () => {
             toast.error("Failed to update availability.");
@@ -59,6 +68,8 @@ export default function MenuCard({ data }: Props) {
 
     const handleDelete = () => {
         const confirm = window.confirm(`Are you sure you want to delete "${data.name}"?`);
+        queryClient.invalidateQueries({ queryKey: ["get-all-menus", restaurantId as string] });
+        queryClient.refetchQueries({ queryKey: ["get-all-menus", restaurantId as string] });
         if (confirm) deleteItem();
     };
 

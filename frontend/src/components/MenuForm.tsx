@@ -17,7 +17,7 @@ import { postMenu, updateMenus } from "@/hooks/query"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { queryClient } from "@/integrations/tanstack-query/root-provider"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 type MenuFormInput = z.infer<typeof menuInputSchema>
 
@@ -29,6 +29,7 @@ type MenuFormProps = {
 
 function MenuForm({ type, defaultValues, menuId }: MenuFormProps) {
     const { selectedRestaurantId } = useRestaurantStore()
+    const [previewImage, setPreviewImage] = useState<string | null>(null)
 
     const form = useForm<MenuFormInput>({
         resolver: zodResolver(menuInputSchema),
@@ -50,6 +51,7 @@ function MenuForm({ type, defaultValues, menuId }: MenuFormProps) {
                 imageUrl: undefined as unknown as File,
             })
         }
+        if (previewImage) URL.revokeObjectURL(previewImage)
     }, [defaultValues, selectedRestaurantId])
 
     const mutation = useMutation({
@@ -169,19 +171,33 @@ function MenuForm({ type, defaultValues, menuId }: MenuFormProps) {
                             <FormItem>
                                 <FormLabel>Image</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={(e) => {
-                                            const file = e.target.files?.[0]
-                                            if (file) onChange(file)
-                                        }}
-                                    />
+                                    <div className="space-y-2">
+                                        <Input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => {
+                                                const file = e.target.files?.[0]
+                                                if (file) {
+                                                    onChange(file)
+                                                    const url = URL.createObjectURL(file)
+                                                    setPreviewImage(url)
+                                                }
+                                            }}
+                                        />
+                                        {previewImage && (
+                                            <img
+                                                src={previewImage}
+                                                alt="Preview"
+                                                className="mt-2 h-32 object-cover rounded border"
+                                            />
+                                        )}
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
+
 
                     <Button type="submit" className="w-full" disabled={mutation.isPending}>
                         {type === "create" ? "Create" : "Update"}
