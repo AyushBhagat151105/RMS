@@ -18,11 +18,14 @@ export const Route = createFileRoute('/admin/menu')({
 
 function RouteComponent() {
   const { selectedRestaurantId } = useRestaurantStore()
+  const { authUser } = useAuthStore()
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['get-all-menus', selectedRestaurantId?.id as string],
-    queryFn: () => getMenus(selectedRestaurantId?.id as string),
-    enabled: !!selectedRestaurantId?.id,
+  const restaurantId = selectedRestaurantId?.id || authUser?.restaurantId
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['get-all-menus', restaurantId as string],
+    queryFn: () => getMenus(restaurantId as string),
+    enabled: !!restaurantId,
   })
 
   if (!selectedRestaurantId) {
@@ -41,13 +44,6 @@ function RouteComponent() {
     )
   }
 
-  if (isError) {
-    return (
-      <div className="flex items-center justify-center min-h-screen px-4 text-center text-lg text-destructive">
-        Error fetching menu items. Please try again later.
-      </div>
-    )
-  }
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-8">
