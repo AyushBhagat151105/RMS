@@ -8,7 +8,6 @@ import { useRestaurantStore } from "@/store/restaurant";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
