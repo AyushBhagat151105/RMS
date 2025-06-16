@@ -15,9 +15,6 @@ export const Route = createFileRoute('/kitchen/')({
 
 function RouteComponent() {
 
-  const { authUser } = useAuthStore()
-  console.log(authUser);
-
 
   return (
     <div className='flex justify-center items-center p-3'>

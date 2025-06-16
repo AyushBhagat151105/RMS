@@ -7,30 +7,37 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table"
-import { getOrders } from "@/hooks/query"
+import { getOrders, updateOrderStatus } from "@/hooks/query"
 import { useRestaurantStore } from "@/store/restaurant"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { toast } from "sonner"
 import { exportToCSV, exportToExcel } from "@/lib/exportUtils"
 import { Button } from "@/components/ui/button"
+import { useAuthStore } from "@/store/store"
+
+
 
 export default function Order() {
     const { selectedRestaurantId } = useRestaurantStore()
+    const { authUser } = useAuthStore()
     const audioRef = useRef<HTMLAudioElement | null>(null)
     const prevOrderIdsRef = useRef<Set<string>>(new Set())
 
     const queryClient = useQueryClient()
+    const restaurantId = selectedRestaurantId?.id || authUser?.restaurantId
+
+    console.log(authUser);
 
     const [selectedOrder, setSelectedOrder] = useState<any>(null)
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ["orders", selectedRestaurantId?.id],
-        queryFn: () => getOrders(selectedRestaurantId?.id as string),
+        queryKey: ["orders", restaurantId],
+        queryFn: () => getOrders(restaurantId as string),
         refetchInterval: 10000,
         refetchOnWindowFocus: true,
-        enabled: !!selectedRestaurantId?.id,
+        enabled: !!restaurantId,
     })
 
     const orders = data?.data || []
@@ -52,10 +59,10 @@ export default function Order() {
         }
 
         if (hasNewOrder && previousOrderIds.size > 0) {
-            queryClient.invalidateQueries({ queryKey: ["waiter-count", selectedRestaurantId?.id as string] });
-            queryClient.invalidateQueries({ queryKey: ["kitchen-count", selectedRestaurantId?.id as string] });
-            queryClient.invalidateQueries({ queryKey: ["order-count", selectedRestaurantId?.id as string] });
-            queryClient.invalidateQueries({ queryKey: ["order-count-by-status", selectedRestaurantId?.id as string] })
+            queryClient.invalidateQueries({ queryKey: ["waiter-count", restaurantId as string] });
+            queryClient.invalidateQueries({ queryKey: ["kitchen-count", restaurantId as string] });
+            queryClient.invalidateQueries({ queryKey: ["order-count", restaurantId as string] });
+            queryClient.invalidateQueries({ queryKey: ["order-count-by-status", restaurantId as string] })
             toast.success("🔔 New order received!")
             audioRef.current?.play().catch((err) => {
                 console.error("Audio playback failed:", err)
@@ -82,12 +89,26 @@ export default function Order() {
     }));
 
 
+    const mutation = useMutation({
+        mutationFn: async (id: string) => {
+            await updateOrderStatus(id, { status: "COMPLETED" })
+
+            queryClient.invalidateQueries({ queryKey: ["orders", restaurantId as string] });
+            toast.success("🔔 Order completed!")
+        }
+    })
+
+    const handleCompleteOrder = async (id: string) => {
+        mutation.mutate(id)
+    }
+
+
     return (
         <div className="w-full">
             <h1 className="text-xl font-semibold mb-4">Orders</h1>
             <audio ref={audioRef} src="/notification.mp3" preload="auto" />
 
-            {!selectedRestaurantId ? (
+            {!restaurantId ? (
                 <p>Please select a restaurant</p>
             ) : isLoading ? (
                 <p>Loading...</p>
@@ -95,31 +116,27 @@ export default function Order() {
                 <p>Error loading orders</p>
             ) : (
                 <>
-                    <div className="flex justify-end mb-2 gap-2">
-                        <Button
-                            onClick={() => exportToCSV(exportableData)}
-                            className=" text-white px-4 py-1 rounded "
-                        >
-                            Export CSV
-                        </Button>
-                        <Button
-                            variant={"outline"}
-                            onClick={() => exportToExcel(exportableData)}
-                            className="px-4 py-1 rounded"
-                        >
-                            Export Excel
-                        </Button>
-                    </div>
+                    {/* Export buttons only for admin */}
+                    {authUser?.role === "ADMIN" && (
+                        <div className="flex justify-end mb-2 gap-2">
+                            <Button onClick={() => exportToCSV(exportableData)}>Export CSV</Button>
+                            <Button variant="outline" onClick={() => exportToExcel(exportableData)}>
+                                Export Excel
+                            </Button>
+                        </div>
+                    )}
+
                     <Table>
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Order ID</TableHead>
-                                <TableHead>Waiter Name</TableHead>
+                                <TableHead>Waiter</TableHead>
                                 <TableHead>Table</TableHead>
                                 <TableHead>Status</TableHead>
                                 <TableHead>Total (₹)</TableHead>
                                 <TableHead>Items</TableHead>
-                                <TableHead>Created At</TableHead>
+                                <TableHead>Created</TableHead>
+                                {authUser?.role === "KITCHEN" && <TableHead>Action</TableHead>}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -127,10 +144,12 @@ export default function Order() {
                                 <TableRow
                                     key={order.id}
                                     onClick={() => {
-                                        setSelectedOrder(order)
-                                        setIsDialogOpen(true)
+                                        if (authUser?.role !== "KITCHEN") {
+                                            setSelectedOrder(order);
+                                            setIsDialogOpen(true);
+                                        }
                                     }}
-                                    className="cursor-pointer hover:bg-muted transition"
+                                    className={`cursor-${authUser?.role !== "KITCHEN" ? "pointer" : "default"} hover:bg-muted transition`}
                                 >
                                     <TableCell className="font-mono text-xs">{order.id}</TableCell>
                                     <TableCell>{order.waiter.fullName}</TableCell>
@@ -153,20 +172,35 @@ export default function Order() {
                                             </div>
                                         ))}
                                     </TableCell>
-                                    <TableCell>
-                                        {new Date(order.createdAt).toLocaleString()}
-                                    </TableCell>
+                                    <TableCell>{new Date(order.createdAt).toLocaleString()}</TableCell>
+
+                                    {/* Kitchen can update status */}
+                                    {authUser?.role === "KITCHEN" && (
+                                        <TableCell>
+                                            {order.status !== "COMPLETED" && (
+                                                <Button
+                                                    variant="outline"
+                                                    onClick={() => handleCompleteOrder(order.id)}
+                                                    className="text-xs"
+                                                >
+                                                    Mark Completed
+                                                </Button>
+                                            )}
+                                        </TableCell>
+                                    )}
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
 
-                    {/* Dialog for order details */}
-                    <OrderDialog
-                        open={isDialogOpen}
-                        onOpenChange={setIsDialogOpen}
-                        order={selectedOrder}
-                    />
+                    {/* Dialog only for Admin/Waiter */}
+                    {authUser?.role !== "KITCHEN" && (
+                        <OrderDialog
+                            open={isDialogOpen}
+                            onOpenChange={setIsDialogOpen}
+                            order={selectedOrder}
+                        />
+                    )}
                 </>
             )}
         </div>

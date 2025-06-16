@@ -10,9 +10,13 @@ function RouteComponent() {
   return (
     <SidebarProvider defaultOpen={true}>
       <WaiterSidebar />
-      <main>
-        <SidebarTrigger />
-        <Outlet />
+      <main className="flex flex-col md:flex-row w-full h-screen overflow-hidden">
+        <div>
+          <SidebarTrigger />
+        </div>
+        <div className="flex-1 overflow-auto">
+          <Outlet />
+        </div>
       </main>
     </SidebarProvider>
   )

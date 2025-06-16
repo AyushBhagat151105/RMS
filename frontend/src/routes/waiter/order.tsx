@@ -1,3 +1,4 @@
+import Order from '@/page/Order'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/waiter/order')({
@@ -5,5 +6,7 @@ export const Route = createFileRoute('/waiter/order')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/waiter/order"!</div>
+  return <div>
+    <Order />
+  </div>
 }

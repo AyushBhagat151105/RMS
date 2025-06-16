@@ -1,3 +1,4 @@
+import GreetingCard from '@/components/GreetingCard'
 import { useAuthStore } from '@/store/store'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -13,5 +14,7 @@ export const Route = createFileRoute('/waiter/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/waiter/"!</div>
+  return <div>
+    <GreetingCard />
+  </div>
 }
