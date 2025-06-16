@@ -51,3 +51,17 @@ export type MenuItem = {
   createdAt: string
   updatedAt: string
 }
+
+export type OrderType = {
+  id: string;
+  status: string;
+  createdAt: string;
+  waiter: { fullName: string };
+  table: { number: number };
+  total: number;
+  Order_Item: {
+      id: string;
+      quantity: number;
+      menuItem: { name: string };
+  }[];
+};

@@ -14,7 +14,7 @@ function RouteComponent() {
 
   const restaurantId = selectedRestaurantId?.id || authUser?.restaurantId
 
-  return <div>
+  return <div className='p-4'>
     <CreateOrderForm restaurantId={restaurantId as string} />
   </div>
 }

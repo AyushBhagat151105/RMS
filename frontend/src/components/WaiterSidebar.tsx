@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar"
-import { ListOrdered, PanelBottom, Table, UtensilsCrossed } from "lucide-react"
+import { ListOrdered, PanelBottom, UtensilsCrossed } from "lucide-react"
 import LogoutButton from "./Logout"
 import ThemeToggle from "./ThemeToggle"
 
@@ -14,11 +14,6 @@ const items = [
         title: "Order",
         url: "/waiter/order",
         icon: ListOrdered,
-    },
-    {
-        title: "Table",
-        url: "/waiter/table",
-        icon: Table,
     },
     {
         title: "Plase orders",

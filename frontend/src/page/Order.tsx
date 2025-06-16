@@ -15,6 +15,7 @@ import { toast } from "sonner"
 import { exportToCSV, exportToExcel } from "@/lib/exportUtils"
 import { Button } from "@/components/ui/button"
 import { useAuthStore } from "@/store/store"
+import type { OrderType } from "@/types/types"
 
 
 
@@ -23,6 +24,8 @@ export default function Order() {
     const { authUser } = useAuthStore()
     const audioRef = useRef<HTMLAudioElement | null>(null)
     const prevOrderIdsRef = useRef<Set<string>>(new Set())
+    const prevOrderStatusRef = useRef<Map<string, string>>(new Map());
+
 
     const queryClient = useQueryClient()
     const restaurantId = selectedRestaurantId?.id || authUser?.restaurantId
@@ -43,18 +46,20 @@ export default function Order() {
     const orders = data?.data || []
 
     useEffect(() => {
-        if (!orders.length) return
+        if (!orders.length) return;
+
 
         const currentOrderIds = new Set<string>(
-            orders.map((order: { id: string }) => order.id)
-        )
-        const previousOrderIds = prevOrderIdsRef.current
+            orders.map((order: OrderType) => order.id)
+        );
+        const previousOrderIds = prevOrderIdsRef.current;
 
-        let hasNewOrder = false
+
+        let hasNewOrder = false;
         for (const id of currentOrderIds) {
             if (!previousOrderIds.has(id)) {
-                hasNewOrder = true
-                break
+                hasNewOrder = true;
+                break;
             }
         }
 
@@ -62,15 +67,32 @@ export default function Order() {
             queryClient.invalidateQueries({ queryKey: ["waiter-count", restaurantId as string] });
             queryClient.invalidateQueries({ queryKey: ["kitchen-count", restaurantId as string] });
             queryClient.invalidateQueries({ queryKey: ["order-count", restaurantId as string] });
-            queryClient.invalidateQueries({ queryKey: ["order-count-by-status", restaurantId as string] })
-            toast.success("🔔 New order received!")
+            queryClient.invalidateQueries({ queryKey: ["order-count-by-status", restaurantId as string] });
+
+            toast.success("🔔 New order received!");
             audioRef.current?.play().catch((err) => {
-                console.error("Audio playback failed:", err)
-            })
+                console.error("Audio playback failed:", err);
+            });
         }
 
-        prevOrderIdsRef.current = currentOrderIds
-    }, [orders])
+
+        const prevStatuses = prevOrderStatusRef.current;
+        for (const order of orders as OrderType[]) {
+            const prevStatus = prevStatuses.get(order.id);
+            if (prevStatus && prevStatus !== order.status) {
+                toast.info(`🔄 Order ${order.id} status changed: ${prevStatus} ➝ ${order.status}`);
+                audioRef.current?.play().catch((err) => {
+                    console.error("Audio playback failed:", err);
+                });
+            }
+            prevStatuses.set(order.id, order.status);
+        }
+
+        prevOrderIdsRef.current = currentOrderIds;
+
+    }, [orders, queryClient, restaurantId]);
+
+
 
     const sortedOrders = useMemo(() => {
         return [...orders].sort(
@@ -144,10 +166,10 @@ export default function Order() {
                                 <TableRow
                                     key={order.id}
                                     onClick={() => {
-                                        if (authUser?.role !== "KITCHEN") {
-                                            setSelectedOrder(order);
-                                            setIsDialogOpen(true);
-                                        }
+
+                                        setSelectedOrder(order);
+                                        setIsDialogOpen(true);
+
                                     }}
                                     className={`cursor-${authUser?.role !== "KITCHEN" ? "pointer" : "default"} hover:bg-muted transition`}
                                 >
@@ -193,14 +215,13 @@ export default function Order() {
                         </TableBody>
                     </Table>
 
-                    {/* Dialog only for Admin/Waiter */}
-                    {authUser?.role !== "KITCHEN" && (
-                        <OrderDialog
-                            open={isDialogOpen}
-                            onOpenChange={setIsDialogOpen}
-                            order={selectedOrder}
-                        />
-                    )}
+
+                    <OrderDialog
+                        open={isDialogOpen}
+                        onOpenChange={setIsDialogOpen}
+                        order={selectedOrder}
+                    />
+
                 </>
             )}
         </div>
