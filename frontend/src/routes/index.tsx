@@ -17,7 +17,6 @@ function App() {
   useEffect(() => {
     checkAuth()
     getRestaurants()
-
   }, [])
 
   useEffect(() => {

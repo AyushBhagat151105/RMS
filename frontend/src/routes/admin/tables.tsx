@@ -14,7 +14,7 @@ export const Route = createFileRoute('/admin/tables')({
 })
 
 function RouteComponent() {
-  return <div className='flex w-screen h-screen'>
+  return <div>
     <TableList />
   </div>
 }

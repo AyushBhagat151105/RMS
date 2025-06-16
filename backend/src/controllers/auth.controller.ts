@@ -278,6 +278,7 @@ export const getUserProfile = asyncHandler(
       avatar: string | null;
       role: string;
       isVerified: boolean;
+      restaurantId?: string | null;
     } | null = null;
 
     // Try User
@@ -308,6 +309,7 @@ export const getUserProfile = asyncHandler(
           email: true,
           avatar: true,
           role: true,
+          restaurantId: true,
         },
       });
 
@@ -330,6 +332,7 @@ export const getUserProfile = asyncHandler(
           email: true,
           avatar: true,
           role: true,
+          restaurantId: true,
         },
       });
 

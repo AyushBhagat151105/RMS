@@ -8,7 +8,6 @@ import { useRestaurantStore } from "@/store/restaurant";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -21,6 +20,7 @@ import {
 import type { ChartConfig } from "@/components/ui/chart";
 
 import type { PieSectorDataItem } from "recharts/types/polar/Pie";
+import { useAuthStore } from "@/store/store";
 
 type ChartItem = {
     status: string;
@@ -40,12 +40,15 @@ const STATUS_COLORS: Record<string, string> = {
 
 function ChartPie() {
     const { selectedRestaurantId } = useRestaurantStore();
+    const { authUser } = useAuthStore()
     const [activeIndex, setActiveIndex] = useState(0);
 
+    const restaurantId = selectedRestaurantId?.id || authUser?.restaurantId
+
     const { data, isLoading, isError } = useQuery({
-        queryKey: ["order-count-by-status", selectedRestaurantId?.id],
+        queryKey: ["order-count-by-status", restaurantId as string],
         queryFn: () =>
-            getCountOrdersByStatus(selectedRestaurantId?.id as string),
+            getCountOrdersByStatus(restaurantId as string),
     });
 
     if (isLoading) return <p>Loading...</p>;
@@ -72,7 +75,6 @@ function ChartPie() {
         <Card className="flex flex-col w-full max-w-md">
             <CardHeader className="items-center pb-0">
                 <CardTitle>Orders by Status</CardTitle>
-                <CardDescription>Last 6 Months</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
                 <ChartContainer

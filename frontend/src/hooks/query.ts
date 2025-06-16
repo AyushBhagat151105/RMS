@@ -181,3 +181,22 @@ export const deleteRestaurant = async (id: string) => {
 
   return res.data
 }
+
+export const updateOrderStatus = async (
+  id: string,
+  data: { status: string },
+) => {
+  console.log(data)
+
+  const res = await axiosInstance.put(`/order/update-order/${id}`, data)
+
+  return res.data
+}
+
+export const createOrder = async (data: {
+  tableId: string
+  items: { menuId: string; quantity: number; price: number }[]
+}) => {
+  const res = await axiosInstance.post('/order/create-order', data)
+  return res.data
+}

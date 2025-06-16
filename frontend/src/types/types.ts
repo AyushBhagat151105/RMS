@@ -37,3 +37,31 @@ export type Restaurant = {
   phone: string
   email: string
 }
+
+export type MenuItem = {
+  id: string
+  name: string
+  description: string
+  price: number
+  imageUrl: string
+  available: boolean
+  restaurantId: string
+  categoryId: string | null
+  tags: string[]
+  createdAt: string
+  updatedAt: string
+}
+
+export type OrderType = {
+  id: string;
+  status: string;
+  createdAt: string;
+  waiter: { fullName: string };
+  table: { number: number };
+  total: number;
+  Order_Item: {
+      id: string;
+      quantity: number;
+      menuItem: { name: string };
+  }[];
+};

@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar"
-import { ListOrdered, PanelBottom, Table } from "lucide-react"
+import { ListOrdered, PanelBottom, UtensilsCrossed } from "lucide-react"
 import LogoutButton from "./Logout"
+import ThemeToggle from "./ThemeToggle"
 
 const items = [
     {
@@ -15,9 +16,9 @@ const items = [
         icon: ListOrdered,
     },
     {
-        title: "Table",
-        url: "/waiter/table",
-        icon: Table,
+        title: "Plase orders",
+        url: "/waiter/orders",
+        icon: UtensilsCrossed,
     },
 ]
 
@@ -47,6 +48,7 @@ function WaiterSidebar() {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
+                <ThemeToggle />
                 <LogoutButton />
             </SidebarFooter>
         </Sidebar>
