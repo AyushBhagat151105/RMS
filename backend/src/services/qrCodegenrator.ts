@@ -9,7 +9,7 @@ export const generateQRCodeAndUpload = async (
   restaurantId: string
 ): Promise<{ secure_url: string; public_id: string } | null> => {
   try {
-    const qrUrl = `${env.FRONTEND_URL}/restaurant/${restaurantId}/table/${tableId}`;
+    const qrUrl = `${env.FRONTEND_URL}/restaurant/${restaurantId}/menu`;
     const tempDir = path.join(__dirname, "../../public/temp");
 
     if (!fs.existsSync(tempDir)) {
