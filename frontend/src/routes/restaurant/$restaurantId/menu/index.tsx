@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useQuery } from '@tanstack/react-query'
 import { axiosInstance } from '@/lib/axios'
 import { useState } from 'react'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export const Route = createFileRoute('/restaurant/$restaurantId/menu/')({
   component: RouteComponent,
@@ -42,11 +43,12 @@ function RouteComponent() {
   })
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="w-full border-b bg-white sticky top-0 z-50 shadow-sm">
+      <header className="w-full border-b bg-background sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between py-2 px-4 sm:px-6 lg:px-8">
           <h2 className="text-xl font-bold sm:text-2xl">RMS</h2>
+          <ThemeToggle />
         </div>
       </header>
 
@@ -67,7 +69,8 @@ function RouteComponent() {
           <div className="flex flex-wrap items-center gap-2">
             <Badge
               onClick={() => setActiveTag(null)}
-              className={`cursor-pointer text-xs ${!activeTag ? 'bg-black text-white' : ''}`}
+              className={`cursor-pointer text-xs ${!activeTag ? 'bg-primary text-primary-foreground' : ''
+                }`}
             >
               All
             </Badge>
@@ -75,7 +78,7 @@ function RouteComponent() {
               <Badge
                 key={tag as string}
                 onClick={() => setActiveTag(tag as string)}
-                className={`cursor-pointer text-xs ${activeTag === tag ? 'bg-black text-white' : ''
+                className={`cursor-pointer text-xs ${activeTag === tag ? 'bg-primary text-primary-foreground' : ''
                   }`}
               >
                 {tag as string}
@@ -109,8 +112,8 @@ function RouteComponent() {
               available: boolean
             }) => (
               <Card
-                key={menu.id as string}
-                className="w-full flex flex-col bg-white border shadow-sm hover:shadow-md transition-all duration-200 rounded-lg overflow-hidden"
+                key={menu.id}
+                className="w-full flex flex-col bg-card border shadow-sm hover:shadow-md transition-all duration-200 rounded-lg overflow-hidden"
               >
                 <div className="relative">
                   <img
@@ -138,7 +141,7 @@ function RouteComponent() {
                   </p>
                 </CardContent>
                 <CardFooter className="flex flex-col items-center gap-0.5 px-2 pb-2 mt-1">
-                  <p className="text-green-600 font-semibold text-sm">₹{menu.price}</p>
+                  <p className="text-green-600 dark:text-green-400 font-semibold text-sm">₹{menu.price}</p>
                   <div className="flex flex-wrap justify-center gap-1">
                     {menu.tags?.map((tag, index) => (
                       <Badge key={index} variant="secondary" className="text-[10px]">
