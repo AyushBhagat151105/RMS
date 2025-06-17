@@ -36,5 +36,5 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY ./prisma .
 
-EXPOSE 8081
+EXPOSE 8082
 CMD ["sh", "-c", "pnpm dlx prisma migrate deploy && node dist/index.js"]
