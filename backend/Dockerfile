@@ -1,13 +1,40 @@
-FROM node:18-alpine
+
+FROM node:20-alpine AS builder
+
+
+RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package.json ./
-RUN npm install
+
+COPY package.json pnpm-lock.yaml ./
+
+
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN npx prisma generate
+
+RUN pnpm prisma generate
+
+
+RUN pnpm build
+
+# Stage 2: Production image
+FROM node:20-alpine AS production
+
+ENV NODE_ENV=production
+
+
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY ./prisma .
 
 EXPOSE 8081
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
+CMD ["sh", "-c", "pnpm dlx prisma migrate deploy &&dist/index.js"]
