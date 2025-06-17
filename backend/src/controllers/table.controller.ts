@@ -19,7 +19,7 @@ export const createTable = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(400, "Bad Request: Missing required fields");
   }
 
-  console.log(restaurantId);
+  // console.log(restaurantId);
 
   const table = await db.tables.create({
     data: {

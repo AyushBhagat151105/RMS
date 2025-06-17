@@ -29,7 +29,7 @@ export const useRestaurantStore = create<RestaurantState>()((set) => ({
   getRestaurants: async () => {
     try {
       const res = await axiosInstance.get('/restaurant/get-restaurants')
-      console.log(res.data.data)
+      // console.log(res.data.data)
       set({ restaurants: res.data.data })
     } catch (error) {
       console.log(error)

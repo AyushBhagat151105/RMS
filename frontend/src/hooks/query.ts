@@ -1,7 +1,7 @@
 import { axiosInstance } from '@/lib/axios'
 
 export const getOrders = async (id: string) => {
-  console.log(id)
+  // console.log(id)
 
   const res = await axiosInstance.get(`/order/get-all-orders/${id}`)
 
@@ -186,7 +186,7 @@ export const updateOrderStatus = async (
   id: string,
   data: { status: string },
 ) => {
-  console.log(data)
+  // console.log(data)
 
   const res = await axiosInstance.put(`/order/update-order/${id}`, data)
 

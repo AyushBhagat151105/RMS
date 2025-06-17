@@ -30,7 +30,7 @@ export default function Order() {
     const queryClient = useQueryClient()
     const restaurantId = selectedRestaurantId?.id || authUser?.restaurantId
 
-    console.log(authUser);
+    // console.log(authUser);
 
     const [selectedOrder, setSelectedOrder] = useState<any>(null)
     const [isDialogOpen, setIsDialogOpen] = useState(false);

@@ -56,9 +56,9 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isCheckingAuth: true })
     try {
       const res = await axiosInstance.get('/auth/me')
-      console.log('auth api call')
+      // console.log('auth api call')
       set({ authUser: res.data.data })
-      console.log('auth user', res.data.data)
+      // console.log('auth user', res.data.data)
     } catch (error) {
       set({ authUser: null })
     } finally {
@@ -71,7 +71,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
 
     try {
       const res = await axiosInstance.post('/auth/register', data)
-      console.log(res.data)
+      // console.log(res.data)
       return res.data as SignUpResponse
     } catch (error) {
       console.log(error)
@@ -86,7 +86,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isLoggingIn: true })
     try {
       const res = await axiosInstance.post('/auth/login', data)
-      console.log(res)
+      // console.log(res)
 
       if (res.data.data.isVerified) {
         set({ authUser: res.data.data })
@@ -120,7 +120,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isLoggingIn: true })
     try {
       const res = await axiosInstance.get(`/auth/verify/${id}`)
-      console.log(res)
+      // console.log(res)
       toast.success(res.data.message)
     } catch (error) {
       console.log(error)
@@ -134,7 +134,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isLoggingIn: true })
     try {
       const res = await axiosInstance.post('/staff/login-waiter', data)
-      console.log(res)
+      // console.log(res)
 
       set({ authUser: res.data.data })
       toast.success('Login successful.')
@@ -150,7 +150,7 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isLoggingIn: true })
     try {
       const res = await axiosInstance.post('/staff/login-kitchen', data)
-      console.log(res.data)
+      // console.log(res.data)
       set({ authUser: res.data.data })
       toast.success('Login successful.')
       return res.data.data
