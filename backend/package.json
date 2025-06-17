@@ -10,6 +10,7 @@
     "prestart": "pnpm build",
     "generateDoc": "node src/swagger.js"
   },
+  "packageManager": "pnpm@10.12.1",
   "keywords": [],
   "author": "",
   "license": "ISC",
