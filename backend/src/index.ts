@@ -3,7 +3,7 @@ import app from "./app";
 import { env } from "./validators/env";
 import connectDB from "./lib/connectDB.lib";
 
-const PORT = env.PORT ?? 8000;
+const PORT = env.PORT ?? 8081;
 
 connectDB().then(() =>
   app.listen(PORT, () => {
