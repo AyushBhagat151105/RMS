@@ -11,14 +11,43 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as WaiterImport } from './routes/waiter'
+import { Route as KitchenImport } from './routes/kitchen'
+import { Route as AdminImport } from './routes/admin'
 import { Route as IndexImport } from './routes/index'
 import { Route as WaiterIndexImport } from './routes/waiter/index'
-import { Route as RestaurantsIndexImport } from './routes/restaurants/index'
 import { Route as KitchenIndexImport } from './routes/kitchen/index'
 import { Route as AdminIndexImport } from './routes/admin/index'
-import { Route as RestaurantsRestaurantsIdRestaurantImport } from './routes/restaurants_/$restaurantsId/restaurant'
+import { Route as WaiterOrdersImport } from './routes/waiter/orders'
+import { Route as WaiterOrderImport } from './routes/waiter/order'
+import { Route as KitchenOrderImport } from './routes/kitchen/order'
+import { Route as AdminTablesImport } from './routes/admin/tables'
+import { Route as AdminRestaurantImport } from './routes/admin/restaurant'
+import { Route as AdminMenuImport } from './routes/admin/menu'
+import { Route as AdminStaffWaiterImport } from './routes/admin/staff/waiter'
+import { Route as AdminStaffKitchenImport } from './routes/admin/staff/kitchen'
+import { Route as AdminRIdOrderImport } from './routes/admin/$rId/order'
+import { Route as RestaurantRestaurantIdMenuIndexImport } from './routes/restaurant/$restaurantId/menu/index'
 
 // Create/Update Routes
+
+const WaiterRoute = WaiterImport.update({
+  id: '/waiter',
+  path: '/waiter',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const KitchenRoute = KitchenImport.update({
+  id: '/kitchen',
+  path: '/kitchen',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminRoute = AdminImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -27,33 +56,81 @@ const IndexRoute = IndexImport.update({
 } as any)
 
 const WaiterIndexRoute = WaiterIndexImport.update({
-  id: '/waiter/',
-  path: '/waiter/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const RestaurantsIndexRoute = RestaurantsIndexImport.update({
-  id: '/restaurants/',
-  path: '/restaurants/',
-  getParentRoute: () => rootRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => WaiterRoute,
 } as any)
 
 const KitchenIndexRoute = KitchenIndexImport.update({
-  id: '/kitchen/',
-  path: '/kitchen/',
-  getParentRoute: () => rootRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => KitchenRoute,
 } as any)
 
 const AdminIndexRoute = AdminIndexImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => rootRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 
-const RestaurantsRestaurantsIdRestaurantRoute =
-  RestaurantsRestaurantsIdRestaurantImport.update({
-    id: '/restaurants_/$restaurantsId/restaurant',
-    path: '/restaurants/$restaurantsId/restaurant',
+const WaiterOrdersRoute = WaiterOrdersImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => WaiterRoute,
+} as any)
+
+const WaiterOrderRoute = WaiterOrderImport.update({
+  id: '/order',
+  path: '/order',
+  getParentRoute: () => WaiterRoute,
+} as any)
+
+const KitchenOrderRoute = KitchenOrderImport.update({
+  id: '/order',
+  path: '/order',
+  getParentRoute: () => KitchenRoute,
+} as any)
+
+const AdminTablesRoute = AdminTablesImport.update({
+  id: '/tables',
+  path: '/tables',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminRestaurantRoute = AdminRestaurantImport.update({
+  id: '/restaurant',
+  path: '/restaurant',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminMenuRoute = AdminMenuImport.update({
+  id: '/menu',
+  path: '/menu',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminStaffWaiterRoute = AdminStaffWaiterImport.update({
+  id: '/staff/waiter',
+  path: '/staff/waiter',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminStaffKitchenRoute = AdminStaffKitchenImport.update({
+  id: '/staff/kitchen',
+  path: '/staff/kitchen',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminRIdOrderRoute = AdminRIdOrderImport.update({
+  id: '/$rId/order',
+  path: '/$rId/order',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const RestaurantRestaurantIdMenuIndexRoute =
+  RestaurantRestaurantIdMenuIndexImport.update({
+    id: '/restaurant/$restaurantId/menu/',
+    path: '/restaurant/$restaurantId/menu/',
     getParentRoute: () => rootRoute,
   } as any)
 
@@ -68,39 +145,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/admin/': {
-      id: '/admin/'
+    '/admin': {
+      id: '/admin'
       path: '/admin'
       fullPath: '/admin'
-      preLoaderRoute: typeof AdminIndexImport
+      preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
+    }
+    '/kitchen': {
+      id: '/kitchen'
+      path: '/kitchen'
+      fullPath: '/kitchen'
+      preLoaderRoute: typeof KitchenImport
+      parentRoute: typeof rootRoute
+    }
+    '/waiter': {
+      id: '/waiter'
+      path: '/waiter'
+      fullPath: '/waiter'
+      preLoaderRoute: typeof WaiterImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/menu': {
+      id: '/admin/menu'
+      path: '/menu'
+      fullPath: '/admin/menu'
+      preLoaderRoute: typeof AdminMenuImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/restaurant': {
+      id: '/admin/restaurant'
+      path: '/restaurant'
+      fullPath: '/admin/restaurant'
+      preLoaderRoute: typeof AdminRestaurantImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/tables': {
+      id: '/admin/tables'
+      path: '/tables'
+      fullPath: '/admin/tables'
+      preLoaderRoute: typeof AdminTablesImport
+      parentRoute: typeof AdminImport
+    }
+    '/kitchen/order': {
+      id: '/kitchen/order'
+      path: '/order'
+      fullPath: '/kitchen/order'
+      preLoaderRoute: typeof KitchenOrderImport
+      parentRoute: typeof KitchenImport
+    }
+    '/waiter/order': {
+      id: '/waiter/order'
+      path: '/order'
+      fullPath: '/waiter/order'
+      preLoaderRoute: typeof WaiterOrderImport
+      parentRoute: typeof WaiterImport
+    }
+    '/waiter/orders': {
+      id: '/waiter/orders'
+      path: '/orders'
+      fullPath: '/waiter/orders'
+      preLoaderRoute: typeof WaiterOrdersImport
+      parentRoute: typeof WaiterImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexImport
+      parentRoute: typeof AdminImport
     }
     '/kitchen/': {
       id: '/kitchen/'
-      path: '/kitchen'
-      fullPath: '/kitchen'
+      path: '/'
+      fullPath: '/kitchen/'
       preLoaderRoute: typeof KitchenIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/restaurants/': {
-      id: '/restaurants/'
-      path: '/restaurants'
-      fullPath: '/restaurants'
-      preLoaderRoute: typeof RestaurantsIndexImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof KitchenImport
     }
     '/waiter/': {
       id: '/waiter/'
-      path: '/waiter'
-      fullPath: '/waiter'
+      path: '/'
+      fullPath: '/waiter/'
       preLoaderRoute: typeof WaiterIndexImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof WaiterImport
     }
-    '/restaurants_/$restaurantsId/restaurant': {
-      id: '/restaurants_/$restaurantsId/restaurant'
-      path: '/restaurants/$restaurantsId/restaurant'
-      fullPath: '/restaurants/$restaurantsId/restaurant'
-      preLoaderRoute: typeof RestaurantsRestaurantsIdRestaurantImport
+    '/admin/$rId/order': {
+      id: '/admin/$rId/order'
+      path: '/$rId/order'
+      fullPath: '/admin/$rId/order'
+      preLoaderRoute: typeof AdminRIdOrderImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/staff/kitchen': {
+      id: '/admin/staff/kitchen'
+      path: '/staff/kitchen'
+      fullPath: '/admin/staff/kitchen'
+      preLoaderRoute: typeof AdminStaffKitchenImport
+      parentRoute: typeof AdminImport
+    }
+    '/admin/staff/waiter': {
+      id: '/admin/staff/waiter'
+      path: '/staff/waiter'
+      fullPath: '/admin/staff/waiter'
+      preLoaderRoute: typeof AdminStaffWaiterImport
+      parentRoute: typeof AdminImport
+    }
+    '/restaurant/$restaurantId/menu/': {
+      id: '/restaurant/$restaurantId/menu/'
+      path: '/restaurant/$restaurantId/menu'
+      fullPath: '/restaurant/$restaurantId/menu'
+      preLoaderRoute: typeof RestaurantRestaurantIdMenuIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -108,32 +262,112 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AdminRouteChildren {
+  AdminMenuRoute: typeof AdminMenuRoute
+  AdminRestaurantRoute: typeof AdminRestaurantRoute
+  AdminTablesRoute: typeof AdminTablesRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminRIdOrderRoute: typeof AdminRIdOrderRoute
+  AdminStaffKitchenRoute: typeof AdminStaffKitchenRoute
+  AdminStaffWaiterRoute: typeof AdminStaffWaiterRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminMenuRoute: AdminMenuRoute,
+  AdminRestaurantRoute: AdminRestaurantRoute,
+  AdminTablesRoute: AdminTablesRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminRIdOrderRoute: AdminRIdOrderRoute,
+  AdminStaffKitchenRoute: AdminStaffKitchenRoute,
+  AdminStaffWaiterRoute: AdminStaffWaiterRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface KitchenRouteChildren {
+  KitchenOrderRoute: typeof KitchenOrderRoute
+  KitchenIndexRoute: typeof KitchenIndexRoute
+}
+
+const KitchenRouteChildren: KitchenRouteChildren = {
+  KitchenOrderRoute: KitchenOrderRoute,
+  KitchenIndexRoute: KitchenIndexRoute,
+}
+
+const KitchenRouteWithChildren =
+  KitchenRoute._addFileChildren(KitchenRouteChildren)
+
+interface WaiterRouteChildren {
+  WaiterOrderRoute: typeof WaiterOrderRoute
+  WaiterOrdersRoute: typeof WaiterOrdersRoute
+  WaiterIndexRoute: typeof WaiterIndexRoute
+}
+
+const WaiterRouteChildren: WaiterRouteChildren = {
+  WaiterOrderRoute: WaiterOrderRoute,
+  WaiterOrdersRoute: WaiterOrdersRoute,
+  WaiterIndexRoute: WaiterIndexRoute,
+}
+
+const WaiterRouteWithChildren =
+  WaiterRoute._addFileChildren(WaiterRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminIndexRoute
-  '/kitchen': typeof KitchenIndexRoute
-  '/restaurants': typeof RestaurantsIndexRoute
-  '/waiter': typeof WaiterIndexRoute
-  '/restaurants/$restaurantsId/restaurant': typeof RestaurantsRestaurantsIdRestaurantRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/kitchen': typeof KitchenRouteWithChildren
+  '/waiter': typeof WaiterRouteWithChildren
+  '/admin/menu': typeof AdminMenuRoute
+  '/admin/restaurant': typeof AdminRestaurantRoute
+  '/admin/tables': typeof AdminTablesRoute
+  '/kitchen/order': typeof KitchenOrderRoute
+  '/waiter/order': typeof WaiterOrderRoute
+  '/waiter/orders': typeof WaiterOrdersRoute
+  '/admin/': typeof AdminIndexRoute
+  '/kitchen/': typeof KitchenIndexRoute
+  '/waiter/': typeof WaiterIndexRoute
+  '/admin/$rId/order': typeof AdminRIdOrderRoute
+  '/admin/staff/kitchen': typeof AdminStaffKitchenRoute
+  '/admin/staff/waiter': typeof AdminStaffWaiterRoute
+  '/restaurant/$restaurantId/menu': typeof RestaurantRestaurantIdMenuIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/menu': typeof AdminMenuRoute
+  '/admin/restaurant': typeof AdminRestaurantRoute
+  '/admin/tables': typeof AdminTablesRoute
+  '/kitchen/order': typeof KitchenOrderRoute
+  '/waiter/order': typeof WaiterOrderRoute
+  '/waiter/orders': typeof WaiterOrdersRoute
   '/admin': typeof AdminIndexRoute
   '/kitchen': typeof KitchenIndexRoute
-  '/restaurants': typeof RestaurantsIndexRoute
   '/waiter': typeof WaiterIndexRoute
-  '/restaurants/$restaurantsId/restaurant': typeof RestaurantsRestaurantsIdRestaurantRoute
+  '/admin/$rId/order': typeof AdminRIdOrderRoute
+  '/admin/staff/kitchen': typeof AdminStaffKitchenRoute
+  '/admin/staff/waiter': typeof AdminStaffWaiterRoute
+  '/restaurant/$restaurantId/menu': typeof RestaurantRestaurantIdMenuIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/kitchen': typeof KitchenRouteWithChildren
+  '/waiter': typeof WaiterRouteWithChildren
+  '/admin/menu': typeof AdminMenuRoute
+  '/admin/restaurant': typeof AdminRestaurantRoute
+  '/admin/tables': typeof AdminTablesRoute
+  '/kitchen/order': typeof KitchenOrderRoute
+  '/waiter/order': typeof WaiterOrderRoute
+  '/waiter/orders': typeof WaiterOrdersRoute
   '/admin/': typeof AdminIndexRoute
   '/kitchen/': typeof KitchenIndexRoute
-  '/restaurants/': typeof RestaurantsIndexRoute
   '/waiter/': typeof WaiterIndexRoute
-  '/restaurants_/$restaurantsId/restaurant': typeof RestaurantsRestaurantsIdRestaurantRoute
+  '/admin/$rId/order': typeof AdminRIdOrderRoute
+  '/admin/staff/kitchen': typeof AdminStaffKitchenRoute
+  '/admin/staff/waiter': typeof AdminStaffWaiterRoute
+  '/restaurant/$restaurantId/menu/': typeof RestaurantRestaurantIdMenuIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -142,45 +376,72 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/kitchen'
-    | '/restaurants'
     | '/waiter'
-    | '/restaurants/$restaurantsId/restaurant'
+    | '/admin/menu'
+    | '/admin/restaurant'
+    | '/admin/tables'
+    | '/kitchen/order'
+    | '/waiter/order'
+    | '/waiter/orders'
+    | '/admin/'
+    | '/kitchen/'
+    | '/waiter/'
+    | '/admin/$rId/order'
+    | '/admin/staff/kitchen'
+    | '/admin/staff/waiter'
+    | '/restaurant/$restaurantId/menu'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/menu'
+    | '/admin/restaurant'
+    | '/admin/tables'
+    | '/kitchen/order'
+    | '/waiter/order'
+    | '/waiter/orders'
     | '/admin'
     | '/kitchen'
-    | '/restaurants'
     | '/waiter'
-    | '/restaurants/$restaurantsId/restaurant'
+    | '/admin/$rId/order'
+    | '/admin/staff/kitchen'
+    | '/admin/staff/waiter'
+    | '/restaurant/$restaurantId/menu'
   id:
     | '__root__'
     | '/'
+    | '/admin'
+    | '/kitchen'
+    | '/waiter'
+    | '/admin/menu'
+    | '/admin/restaurant'
+    | '/admin/tables'
+    | '/kitchen/order'
+    | '/waiter/order'
+    | '/waiter/orders'
     | '/admin/'
     | '/kitchen/'
-    | '/restaurants/'
     | '/waiter/'
-    | '/restaurants_/$restaurantsId/restaurant'
+    | '/admin/$rId/order'
+    | '/admin/staff/kitchen'
+    | '/admin/staff/waiter'
+    | '/restaurant/$restaurantId/menu/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminIndexRoute: typeof AdminIndexRoute
-  KitchenIndexRoute: typeof KitchenIndexRoute
-  RestaurantsIndexRoute: typeof RestaurantsIndexRoute
-  WaiterIndexRoute: typeof WaiterIndexRoute
-  RestaurantsRestaurantsIdRestaurantRoute: typeof RestaurantsRestaurantsIdRestaurantRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  KitchenRoute: typeof KitchenRouteWithChildren
+  WaiterRoute: typeof WaiterRouteWithChildren
+  RestaurantRestaurantIdMenuIndexRoute: typeof RestaurantRestaurantIdMenuIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminIndexRoute: AdminIndexRoute,
-  KitchenIndexRoute: KitchenIndexRoute,
-  RestaurantsIndexRoute: RestaurantsIndexRoute,
-  WaiterIndexRoute: WaiterIndexRoute,
-  RestaurantsRestaurantsIdRestaurantRoute:
-    RestaurantsRestaurantsIdRestaurantRoute,
+  AdminRoute: AdminRouteWithChildren,
+  KitchenRoute: KitchenRouteWithChildren,
+  WaiterRoute: WaiterRouteWithChildren,
+  RestaurantRestaurantIdMenuIndexRoute: RestaurantRestaurantIdMenuIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -194,30 +455,92 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/admin/",
-        "/kitchen/",
-        "/restaurants/",
-        "/waiter/",
-        "/restaurants_/$restaurantsId/restaurant"
+        "/admin",
+        "/kitchen",
+        "/waiter",
+        "/restaurant/$restaurantId/menu/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/admin": {
+      "filePath": "admin.tsx",
+      "children": [
+        "/admin/menu",
+        "/admin/restaurant",
+        "/admin/tables",
+        "/admin/",
+        "/admin/$rId/order",
+        "/admin/staff/kitchen",
+        "/admin/staff/waiter"
+      ]
+    },
+    "/kitchen": {
+      "filePath": "kitchen.tsx",
+      "children": [
+        "/kitchen/order",
+        "/kitchen/"
+      ]
+    },
+    "/waiter": {
+      "filePath": "waiter.tsx",
+      "children": [
+        "/waiter/order",
+        "/waiter/orders",
+        "/waiter/"
+      ]
+    },
+    "/admin/menu": {
+      "filePath": "admin/menu.tsx",
+      "parent": "/admin"
+    },
+    "/admin/restaurant": {
+      "filePath": "admin/restaurant.tsx",
+      "parent": "/admin"
+    },
+    "/admin/tables": {
+      "filePath": "admin/tables.tsx",
+      "parent": "/admin"
+    },
+    "/kitchen/order": {
+      "filePath": "kitchen/order.tsx",
+      "parent": "/kitchen"
+    },
+    "/waiter/order": {
+      "filePath": "waiter/order.tsx",
+      "parent": "/waiter"
+    },
+    "/waiter/orders": {
+      "filePath": "waiter/orders.tsx",
+      "parent": "/waiter"
+    },
     "/admin/": {
-      "filePath": "admin/index.tsx"
+      "filePath": "admin/index.tsx",
+      "parent": "/admin"
     },
     "/kitchen/": {
-      "filePath": "kitchen/index.tsx"
-    },
-    "/restaurants/": {
-      "filePath": "restaurants/index.tsx"
+      "filePath": "kitchen/index.tsx",
+      "parent": "/kitchen"
     },
     "/waiter/": {
-      "filePath": "waiter/index.tsx"
+      "filePath": "waiter/index.tsx",
+      "parent": "/waiter"
     },
-    "/restaurants_/$restaurantsId/restaurant": {
-      "filePath": "restaurants_/$restaurantsId/restaurant.tsx"
+    "/admin/$rId/order": {
+      "filePath": "admin/$rId/order.tsx",
+      "parent": "/admin"
+    },
+    "/admin/staff/kitchen": {
+      "filePath": "admin/staff/kitchen.tsx",
+      "parent": "/admin"
+    },
+    "/admin/staff/waiter": {
+      "filePath": "admin/staff/waiter.tsx",
+      "parent": "/admin"
+    },
+    "/restaurant/$restaurantId/menu/": {
+      "filePath": "restaurant/$restaurantId/menu/index.tsx"
     }
   }
 }

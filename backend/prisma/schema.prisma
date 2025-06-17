@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -50,7 +49,6 @@ model User {
   createdAt               DateTime       @default(now())
   updatedAt               DateTime       @updatedAt
   Notification            Notification[]
-  Orders                  Orders[]
   restaurants             restaurants[]
 }
 
@@ -66,6 +64,7 @@ model Waiter {
   restaurant   restaurants @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
+  Orders       Orders[]
 
   @@index([restaurantId])
 }
@@ -118,15 +117,15 @@ model Notification {
 }
 
 model Orders {
-  id           String       @id @default(uuid())
-  userId       String
+  id           Int          @id @default(autoincrement())
+  waiterId     String?
   tableId      String
   status       OrderStatus  @default(PENDING)
   total        Float        @default(0.0)
   restaurantId String
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  waiter       Waiter?      @relation(fields: [waiterId], references: [id], onDelete: Cascade)
   table        tables       @relation(fields: [tableId], references: [id], onDelete: Cascade)
   Order_Item   Order_Item[]
   payment      payment[]
@@ -134,14 +133,15 @@ model Orders {
 }
 
 model tables {
-  id           String      @id @default(uuid())
-  number       Int
-  capacity     Int
-  restaurantId String
-  qrCodeUrl    String?
-  restaurant   restaurants @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id                 String      @id @default(uuid())
+  number             Int
+  capacity           Int
+  restaurantId       String
+  qrCodeUrl          String?
+  cloudinaryPublicId String?
+  restaurant         restaurants @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
 
   Orders Orders[]
 
@@ -150,7 +150,7 @@ model tables {
 
 model Order_Item {
   id         String   @id @default(uuid())
-  orderId    String
+  orderId    Int
   menuItemId String
   quantity   Int      @default(1)
   price      Float
@@ -164,7 +164,7 @@ model Order_Item {
 
 model payment {
   id        String   @id @default(uuid())
-  orderId   String
+  orderId   Int
   amount    Float
   method    method   @default(CASH)
   status    status   @default(PENDING)
@@ -175,15 +175,16 @@ model payment {
 }
 
 model menuItem {
-  id           String   @id @default(uuid())
-  name         String
-  description  String?
-  price        Float
-  imageUrl     String?
-  available    Boolean  @default(true)
-  restaurantId String
-  categoryId   String?
-  tags         String[]
+  id                 String   @id @default(uuid())
+  name               String
+  description        String?
+  price              Float
+  imageUrl           String?
+  available          Boolean  @default(true)
+  cloudinaryPublicId String?
+  restaurantId       String
+  categoryId         String?
+  tags               String[]
 
   category   menu_categories? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   restaurant restaurants      @relation(fields: [restaurantId], references: [id], onDelete: Cascade)

@@ -75,7 +75,7 @@ export const createKitchen = asyncHandler(
 
     return res
       .status(201)
-      .json(new ApiResponse(201, "Waiter created successfully", kitchen));
+      .json(new ApiResponse(201, "Kitchen created successfully", kitchen));
   }
 );
 
@@ -101,19 +101,27 @@ export const loginWaiter = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(500, "Failed to generate tokens");
   }
 
-  await db.waiter.update({
+  const profile = await db.waiter.update({
     where: {
       id: waiter.id,
     },
     data: {
       accessToken: accessToken,
     },
+    select: {
+      id: true,
+      email: true,
+      fullName: true,
+      avatar: true,
+      role: true,
+      restaurantId: true,
+    },
   });
 
   return res
     .status(200)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(200, "Login successfull", {}));
+    .json(new ApiResponse(200, "Login successfull", profile));
 });
 
 export const loginKitchen = asyncHandler(
@@ -139,19 +147,27 @@ export const loginKitchen = asyncHandler(
       throw new ApiError(500, "Failed to generate tokens");
     }
 
-    await db.kitchen.update({
+    const profile = await db.kitchen.update({
       where: {
         id: kitchen.id,
       },
       data: {
         accessToken: accessToken,
       },
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        avatar: true,
+        role: true,
+        restaurantId: true,
+      },
     });
 
     return res
       .status(200)
       .cookie("refreshToken", refreshToken, options)
-      .json(new ApiResponse(200, "Login successfull", {}));
+      .json(new ApiResponse(200, "Login successfull", profile));
   }
 );
 
@@ -333,6 +349,8 @@ export const getAllWaiters = asyncHandler(
     if (!waiters) {
       throw new ApiError(400, "No waiter at");
     }
+
+    
 
     return res
       .status(200)

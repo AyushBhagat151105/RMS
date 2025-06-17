@@ -8,7 +8,7 @@ import {
   updateUserAvatar,
   updateUserProfile,
   verifyEmail,
-} from "@/controllers/auth.controller";
+} from "../controllers/auth.controller";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
 import { upload } from "@/middlewares/multer";
 import { Router } from "express";

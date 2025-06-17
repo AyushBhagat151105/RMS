@@ -4,18 +4,27 @@ import { create } from 'zustand'
 
 export interface User {
   id?: string
-  name: string
+  username?: string
+  fullName: string
   email: string
-  image?: string
+  avatar?: string
   role?: string
-  verified?: boolean
+  isVerified?: boolean
+  restaurantId?: string
+}
+
+export interface SignUpResponse {
+  statusCode: Number
+  success: boolean
+  message?: string
+  data?: Record<string, any>
 }
 
 export interface FormDataTypes {
-  name: string
+  username: string
   email: string
   password: string
-  confirm_password: string
+  fullName: string
 }
 
 export interface loginFormDataTypes {
@@ -29,10 +38,12 @@ export interface AuthStore {
   isLoggingIn: boolean
   isCheckingAuth: boolean
   checkAuth: () => Promise<void>
-  signUp: (data: FormDataTypes) => Promise<void>
+  signUp: (data: FormDataTypes) => Promise<SignUpResponse | undefined>
   signIn: (data: loginFormDataTypes) => Promise<User | undefined>
   logOut: () => Promise<void>
   verify: (id: string) => Promise<void>
+  waiter: (data: loginFormDataTypes) => Promise<User | undefined>
+  kitchen: (data: loginFormDataTypes) => Promise<User | undefined>
 }
 
 export const useAuthStore = create<AuthStore>()((set) => ({
@@ -45,9 +56,9 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isCheckingAuth: true })
     try {
       const res = await axiosInstance.get('/auth/me')
-      console.log('auth api call')
-      set({ authUser: res.data })
-      console.log('auth user', res.data.data)
+      // console.log('auth api call')
+      set({ authUser: res.data.data })
+      // console.log('auth user', res.data.data)
     } catch (error) {
       set({ authUser: null })
     } finally {
@@ -55,16 +66,17 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     }
   },
 
-  signUp: async (data: User) => {
+  signUp: async (data: FormDataTypes): Promise<SignUpResponse | undefined> => {
     set({ isSignInUp: true })
 
     try {
       const res = await axiosInstance.post('/auth/register', data)
-      console.log(res)
+      // console.log(res.data)
+      return res.data as SignUpResponse
     } catch (error) {
       console.log(error)
-      console.log(typeof error)
       toast.error('Error while signUp')
+      return undefined
     } finally {
       set({ isSignInUp: false })
     }
@@ -74,16 +86,18 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isLoggingIn: true })
     try {
       const res = await axiosInstance.post('/auth/login', data)
-      if (res.data.data.user.verified) {
-        set({ authUser: res.data.data.user })
+      // console.log(res)
+
+      if (res.data.data.isVerified) {
+        set({ authUser: res.data.data })
         toast.success('Login successful.')
-        return res.data.data.user
+        return res.data.data
       } else {
         toast.success('Please verify your email first.')
-        return res.data.data.user
+        return res.data.data
       }
     } catch (error) {
-      toast.error('Error while login')
+      toast.error(`Error while login ${error}`)
     } finally {
       set({ isLoggingIn: false })
     }
@@ -106,11 +120,42 @@ export const useAuthStore = create<AuthStore>()((set) => ({
     set({ isLoggingIn: true })
     try {
       const res = await axiosInstance.get(`/auth/verify/${id}`)
-      console.log(res)
+      // console.log(res)
       toast.success(res.data.message)
     } catch (error) {
       console.log(error)
       toast.error('Error while verify')
+    } finally {
+      set({ isLoggingIn: false })
+    }
+  },
+
+  waiter: async (data: loginFormDataTypes) => {
+    set({ isLoggingIn: true })
+    try {
+      const res = await axiosInstance.post('/staff/login-waiter', data)
+      // console.log(res)
+
+      set({ authUser: res.data.data })
+      toast.success('Login successful.')
+      return res.data.data
+    } catch (error) {
+      toast.error('Error while login')
+    } finally {
+      set({ isLoggingIn: false })
+    }
+  },
+
+  kitchen: async (data: loginFormDataTypes) => {
+    set({ isLoggingIn: true })
+    try {
+      const res = await axiosInstance.post('/staff/login-kitchen', data)
+      // console.log(res.data)
+      set({ authUser: res.data.data })
+      toast.success('Login successful.')
+      return res.data.data
+    } catch (error) {
+      toast.error('Error while login')
     } finally {
       set({ isLoggingIn: false })
     }
