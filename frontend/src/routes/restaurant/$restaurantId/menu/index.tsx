@@ -1,127 +1,156 @@
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from '@/components/ui/sheet'
-import { useMenuStore } from '@/store/useMenuStore'
 import { createFileRoute } from '@tanstack/react-router'
-
 import { Button } from '@/components/ui/button'
 import {
   Card,
-  CardAction,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { ShoppingBasket } from 'lucide-react'
-import Cart from '@/components/Cart'
+import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useQuery } from '@tanstack/react-query'
+import { axiosInstance } from '@/lib/axios'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/restaurant/$restaurantId/menu/')({
   component: RouteComponent,
 })
 
+const getMenus = async (restaurantId: string) => {
+  const res = await axiosInstance.get(`/menu/get-menu/${restaurantId}`)
+  return res.data.data
+}
+
 function RouteComponent() {
-  let { addItem } = useMenuStore()
+  const { restaurantId } = Route.useParams()
+  const { data: menus = [], isLoading } = useQuery({
+    queryKey: ['menus', restaurantId],
+    queryFn: () => getMenus(restaurantId),
+  })
+
+  const [search, setSearch] = useState("")
+  const [activeTag, setActiveTag] = useState<string | null>(null)
+
+  const allTags = Array.from(new Set(menus.flatMap((m: any) => m.tags || [])))
+
+  const filteredMenus = menus.filter((menu: any) => {
+    const matchSearch = menu.name.toLowerCase().includes(search.toLowerCase())
+    const matchTag = activeTag ? menu.tags?.includes(activeTag) : true
+    return matchSearch && matchTag
+  })
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header - Mobile First */}
+      {/* Header */}
       <header className="w-full border-b bg-white sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto flex items-center justify-between p-4 sm:px-6 lg:px-8">
-          {/* Logo */}
-          <h2 className="text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl">
-            RMS
-          </h2>
-
-          {/* Desktop View: Show Sheet in nav */}
-          <nav className="hidden md:flex space-x-4 lg:space-x-8 items-center">
-            <Sheet>
-              <SheetTrigger asChild>
-                <button>
-                  <ShoppingBasket />
-                </button>
-              </SheetTrigger>
-              <SheetContent side="right">
-                <Cart />
-              </SheetContent>
-            </Sheet>
-          </nav>
-
-          {/* Mobile View: Only visible on small screens */}
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
-                <button>
-                  <ShoppingBasket className="h-7 w-7" />
-                </button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-full max-w-sm">
-                {/* Inside the mobile sheet, show cart only when needed */}
-                <div className="mt-4 text-center">
-                  <Cart />
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+        <div className="max-w-7xl mx-auto flex items-center justify-between py-2 px-4 sm:px-6 lg:px-8">
+          <h2 className="text-xl font-bold sm:text-2xl">RMS</h2>
         </div>
       </header>
 
-      {/* Search Section - Mobile First */}
-      <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
+      {/* Search + Tag Filters */}
+      <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 space-y-2">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-stretch sm:items-center">
           <Input
             placeholder="Search Item..."
-            className="flex-1 h-10 sm:h-12 text-base"
+            className="flex-1 h-10 text-sm"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
-          <Button className="h-10 sm:h-12 px-6 sm:px-8 font-semibold">
+          <Button className="h-10 px-4 text-sm font-medium">
             Search
           </Button>
         </div>
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge
+              onClick={() => setActiveTag(null)}
+              className={`cursor-pointer text-xs ${!activeTag ? 'bg-black text-white' : ''}`}
+            >
+              All
+            </Badge>
+            {allTags.map((tag) => (
+              <Badge
+                key={tag as string}
+                onClick={() => setActiveTag(tag as string)}
+                className={`cursor-pointer text-xs ${activeTag === tag ? 'bg-black text-white' : ''
+                  }`}
+              >
+                {tag as string}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Products Grid - Mobile First Responsive */}
-      <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <Card
-              key={index}
-              className="w-full flex flex-col bg-white shadow-sm hover:shadow-md transition-shadow"
-            >
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg sm:text-xl font-bold text-center">
-                  Phone
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex items-center justify-center p-4">
-                <img
-                  src="https://cdn.dribbble.com/users/2626994/screenshots/8086173/cook_4x.png"
-                  alt="Phone"
-                  className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-lg"
-                />
-              </CardContent>
-              <CardFooter className="flex flex-col gap-3 pt-3">
-                <CardAction className="font-semibold text-lg text-green-600">
-                  Price: ₹20
-                </CardAction>
-                <Button
-                  onClick={() =>
-                    addItem({
-                      id: String(index),
-                      name: `Phone ${index + 1}`,
-                      price: 20,
-                      quantity: 1,
-                    })
-                  }
-                  className="bg-red-500 hover:bg-red-600 px-4 py-3 text-sm font-semibold rounded-xl text-white w-full transition-colors cursor-pointer"
-                >
-                  ADD TO CART
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+      {/* Menu Grid */}
+      <div className="max-w-7xl mx-auto pb-4 px-4 sm:px-6 lg:px-8">
+        {isLoading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {[...Array(8)].map((_, i) => (
+              <Skeleton key={i} className="h-72 w-full rounded-lg" />
+            ))}
+          </div>
+        ) : filteredMenus.length === 0 ? (
+          <p className="text-center text-sm text-muted-foreground mt-8">
+            No menu items found.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {filteredMenus.map((menu: {
+              id: string
+              name: string
+              description: string
+              price: number
+              imageUrl: string
+              tags: string[]
+              available: boolean
+            }) => (
+              <Card
+                key={menu.id as string}
+                className="w-full flex flex-col bg-white border shadow-sm hover:shadow-md transition-all duration-200 rounded-lg overflow-hidden"
+              >
+                <div className="relative">
+                  <img
+                    src={menu.imageUrl}
+                    alt={menu.name}
+                    className="w-full h-36 object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                  <div className="absolute top-2 right-2">
+                    <Badge
+                      variant={menu.available ? 'default' : 'destructive'}
+                      className="text-[10px] px-1.5 py-0.5"
+                    >
+                      {menu.available ? 'Available' : 'Unavailable'}
+                    </Badge>
+                  </div>
+                </div>
+                <CardHeader className="pt-1 pb-1 px-2">
+                  <CardTitle className="text-sm font-semibold text-center truncate">
+                    {menu.name}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="px-2 py-0">
+                  <p className="text-xs text-muted-foreground text-center line-clamp-1">
+                    {menu.description}
+                  </p>
+                </CardContent>
+                <CardFooter className="flex flex-col items-center gap-0.5 px-2 pb-2 mt-1">
+                  <p className="text-green-600 font-semibold text-sm">₹{menu.price}</p>
+                  <div className="flex flex-wrap justify-center gap-1">
+                    {menu.tags?.map((tag, index) => (
+                      <Badge key={index} variant="secondary" className="text-[10px]">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

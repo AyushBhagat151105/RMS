@@ -54,6 +54,9 @@ export default function TableForm({ initialData }: TableFormProps) {
             restaurantId: selectedRestaurantId?.id || "",
         };
 
+        console.log(payload);
+
+
         mutation.mutate(payload);
     };
 

@@ -19,6 +19,8 @@ export const createTable = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(400, "Bad Request: Missing required fields");
   }
 
+  console.log(restaurantId);
+
   const table = await db.tables.create({
     data: {
       restaurant: {
@@ -31,7 +33,7 @@ export const createTable = asyncHandler(async (req: Request, res: Response) => {
     },
   });
 
-  const qrCodeUrl = await generateQRCodeAndUpload(restaurantId, table.id);
+  const qrCodeUrl = await generateQRCodeAndUpload(table.id, restaurantId);
 
   const updatedTable = await db.tables.update({
     where: { id: table.id },
