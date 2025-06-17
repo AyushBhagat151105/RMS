@@ -26,7 +26,7 @@ FROM node:20-alpine AS production
 ENV NODE_ENV=production
 
 
-RUN npm install -g pnpm
+RUN npm install
 
 WORKDIR /app
 
@@ -37,4 +37,4 @@ COPY --from=builder /app/package.json ./package.json
 COPY ./prisma .
 
 EXPOSE 8083
-ENTRYPOINT ["sh", "-c", "pnpm dlx prisma migrate deploy && exec node dist/index.js"]
+ENTRYPOINT ["sh", "-c", "npx prisma migrate deploy && exec node dist/index.js"]
