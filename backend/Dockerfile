@@ -37,4 +37,4 @@ COPY --from=builder /app/package.json ./package.json
 COPY ./prisma .
 
 EXPOSE 8082
-CMD ["sh", "-c", "pnpm dlx prisma migrate deploy && node dist/index.js"]
+ENTRYPOINT ["sh", "-c", "pnpm dlx prisma migrate deploy && exec node dist/index.js"]
